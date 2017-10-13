@@ -25,3 +25,30 @@ idea1：个人维护个人的树（网）
 	本质就是依据要合并的两个用户的图中是否有相同人物（相同的人物ID）把两个树（网）合为一个。
 	5.由于以上讨论到的特性，所以有这样一件事，即，若某人不是该系统的用户，那么他在两张图里就是两个人，所以
 	进行合并操作的时候并不能把他们识别为同一个人。
+	
+	Personal Information
+
+ID(Primary) Name Birth email password used（节点）
+
+Relation
+
+ID(Primary) Papa son DateFrom DateTo Degree
+
+
+注册、登录、新增节点、新增边、展示某一节点临近信息。
+
+注册：
+POST: 传姓名(user_name)，邮箱（email），密码(password)。 登录：
+POST： 邮箱（email）、密码（password）。
+新增节点：
+POST: 传姓名(name)，邮箱（email），生日(birth)。
+新增边：
+Method*：
+Param: name
+Return: json list
+
+Method2：
+POST: papa_id1、son_id2、datefrom、dateto
+
+展示某一节点临近信息：
+Method*：
