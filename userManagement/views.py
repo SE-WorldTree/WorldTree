@@ -5,15 +5,20 @@ from django import forms
 from userManagement.models import User
 
 
-class UserForm(forms.Form):
+class UserRegisterForm(forms.Form):
     username = forms.CharField(label='姓名', max_length=100)
-    email = forms.CharField(label="邮箱", max_lengtj=100)
+    email = forms.CharField(label="邮箱", max_length=100)
+    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+
+
+class UserLoginForm(forms.Form):
+    email = forms.CharField(label="邮箱", max_length=100)
     password = forms.CharField(label='密码', widget=forms.PasswordInput())
 
 
 def register(request):
     if request.method == 'POST':
-        uf = UserForm(request.POST)
+        uf = UserRegisterForm(request.POST)
         if uf.is_valid():
             # 获得表单数据
             username = uf.cleaned_data['username']
@@ -23,13 +28,13 @@ def register(request):
             User.objects.create(username=username, email=email, password=password)
             return HttpResponse('register success!!')
     else:
-        uf = UserForm()
-    return render_to_response('register.html', {'uf': uf}, context_instance=RequestContext(request))
+        uf = UserRegisterForm()
+    return render(request, 'register.html', {'uf': uf})
 
 
 def login(request):
     if request.method == 'POST':
-        uf = UserForm(request.POST)
+        uf = UserLoginForm(request.POST)
         if uf.is_valid():
             # 获取表单用户密码
             email = uf.cleaned_data['email']
@@ -38,16 +43,16 @@ def login(request):
             user = User.objects.filter(email__exact=email, password__exact=password)
             if user:
                 # 比较成功，跳转index
-                response = HttpResponseRedirect('/userManagement/index/')
+                response = HttpResponseRedirect('/index/')
                 # 将username写入浏览器cookie,失效时间为3600
                 response.set_cookie('username', email, 3600)
                 return response
             else:
                 # 比较失败，还在login
-                return HttpResponseRedirect('/userManagement/login/')
+                return HttpResponseRedirect('/login/')
     else:
-        uf = UserForm()
-    return render_to_response('login.html', {'uf': uf}, context_instance=RequestContext(req))
+        uf = UserLoginForm()
+    return render(request, 'login.html', {'uf': uf})
 
 
 def index(request):

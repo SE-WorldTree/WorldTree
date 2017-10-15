@@ -15,13 +15,13 @@ Including another URLconf
 """
 from django.conf.urls import url
 from django.contrib import admin
-import userManagement
+import userManagement.views as um_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', userManagement.views.login, name='login'),
-    url(r'^login/$', userManagement.views.login, name='login'),
-    url(r'^regist/$', userManagement.views.register, name='register'),
-    url(r'^index/$', userManagement.views.index, name='index'),
-    url(r'^logout/$', userManagement.views.logout, name='logout'),
+    url(r'^$', um_views.login, name='login'),
+    url(r'^login/$', um_views.login, name='login'),
+    url(r'^register/$', um_views.register, name='register'),
+    url(r'^index/$', um_views.index, name='index'),
+    url(r'^logout/$', um_views.logout, name='logout'),
 ]
