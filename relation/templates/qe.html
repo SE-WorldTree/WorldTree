@@ -3,12 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title></title>
+    <title>查询关系</title>
 </head>
 
 <body>
-<h1>welcome {{username}} !</h1>
+<h1>查询关系页面：</h1>
+<form method = 'post' enctype="multipart/form-data">
+    {% csrf_token %}
+    {{pf.as_p}}
+    <input type="submit" value = "ok" />
+</form>
 <br>
-<a href="/logout/">退出</a>
+<a href="/gao/">返回</a>
 </body>
 </html>

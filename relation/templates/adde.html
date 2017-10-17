@@ -3,17 +3,17 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>注册</title>
+    <title>加边</title>
 </head>
 
 <body>
-<h1>注册页面：</h1>
+<h1>加边页面：</h1>
 <form method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
-    {{uf.as_p}}
+    {{ef.as_p}}
     <input type="submit" value = "ok" />
 </form>
 <br>
-<a href="/login/">登陆</a>
+<a href="/gao/">返回</a>
 </body>
 </html>

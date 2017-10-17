@@ -27,4 +27,7 @@ urlpatterns = [
     url(r'^logout/$', um_views.logout, name='logout'),
     url(r'^addv/$', rel_views.addVertex, name='addv'),
     url(r'^adde/$', rel_views.addEdge, name='adde'),
+    url(r'^qid/$', rel_views.queryID, name='qid'),
+    url(r'^qe/$', rel_views.queryEdge, name='qe'),
+    url(r'^gao/$', rel_views.main, name='gao'), # temp
 ]
