@@ -17,6 +17,8 @@ from django.conf.urls import url
 from django.contrib import admin
 import userManagement.views as um_views
 import relation.views as rel_views
+import graphGeneration.views as gg_views
+import graphGeneration.templates as gg_tmp
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,4 +32,6 @@ urlpatterns = [
     url(r'^qid/$', rel_views.queryID, name='qid'),
     url(r'^qe/$', rel_views.queryEdge, name='qe'),
     url(r'^gao/$', rel_views.main, name='gao'), # temp
+    url(r'^gg/', gg_views.gg, name='GG'),
+    url(r'^testData', gg_views.testData, name='GGWP'),
 ]
