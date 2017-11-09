@@ -16,6 +16,7 @@ Including another URLconf
 from django.conf.urls import url
 from django.contrib import admin
 import userManagement.views as um_views
+import relation.views as rel_views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,4 +25,9 @@ urlpatterns = [
     url(r'^register/$', um_views.register, name='register'),
     url(r'^index/$', um_views.index, name='index'),
     url(r'^logout/$', um_views.logout, name='logout'),
+    url(r'^addv/$', rel_views.addVertex, name='addv'),
+    url(r'^adde/$', rel_views.addEdge, name='adde'),
+    url(r'^qid/$', rel_views.queryID, name='qid'),
+    url(r'^qe/$', rel_views.queryEdge, name='qe'),
+    url(r'^gao/$', rel_views.main, name='gao'), # temp
 ]
