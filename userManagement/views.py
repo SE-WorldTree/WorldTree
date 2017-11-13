@@ -35,7 +35,7 @@ class UserRegisterForm(forms.Form):
             email = self.cleaned_data['email']
         except:
             raise forms.ValidationError("邮箱输入错误")
-        if User.objects.filter(email=self.cleaned_data['email']).exists():
+        if User.objects.filter(email__exact=self.cleaned_data['email']).exists():
             raise forms.ValidationError("该邮箱已存在")
         return email
 
@@ -62,7 +62,7 @@ def register(request):
             password = uf.cleaned_data['password']
             # 添加到数据库
             User.objects.create(username=username, email=email, password=password)
-            return HttpResponse('register success!!')
+            return HttpResponseRedirect('/login/?info=register_success')
     else:
         uf = UserRegisterForm()
     print(uf)
@@ -82,11 +82,11 @@ def login(request):
                 # 比较成功，跳转index
                 response = HttpResponseRedirect('/index/')
                 # 将username写入浏览器cookie,失效时间为3600
-                response.set_cookie('username', email, 3600)
+                response.set_cookie('email', email, 3600)
                 return response
             else:
                 # 比较失败，还在login
-                return HttpResponseRedirect('/login/?login_fail=1')
+                return HttpResponseRedirect('/login/?info=login_fail')
     else:
         uf = UserLoginForm()
     return render(request, 'login.html', {'uf': uf})
