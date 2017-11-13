@@ -1,0 +1,26 @@
+<html>
+  <head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta charset="utf-8">
+    <title>Webgraphviz</title>
+  </head>
+<body>
+
+<textarea id="graphviz_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+
+</textarea>
+
+
+<div id="graphviz_svg_div">
+  <!-- Target for dynamic svg generation -->
+  {{GGData}}
+</div>
+
+</body>
+
+<!-- Defer loading of javascript by placing these tags at the tail end of the document -->
+{% load staticfiles %}
+<script language="javascript" type="text/javascript" src="{% static 'jquery.min.js' %}"> </script>
+<script language="javascript" type="text/javascript" src="{% static 'viz.js' %}"></script>
+<script language="javascript" type="text/javascript" src="{% static 'site.js' %}"> </script>
+
+</html>
