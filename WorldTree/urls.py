@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
 import userManagement.views as um_views
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -24,4 +26,4 @@ urlpatterns = [
     url(r'^register/$', um_views.register, name='register'),
     url(r'^index/$', um_views.index, name='index'),
     url(r'^logout/$', um_views.logout, name='logout'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
