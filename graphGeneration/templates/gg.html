@@ -5,14 +5,17 @@
   </head>
 <body>
 
-<textarea id="graphviz_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+<textarea id="v_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+    {{ vv }}
+</textarea>
 
+<textarea id="e_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+    {{ ee }}
 </textarea>
 
 
 <div id="graphviz_svg_div">
   <!-- Target for dynamic svg generation -->
-  {{GGData}}
 </div>
 
 </body>

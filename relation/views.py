@@ -29,6 +29,8 @@ def checkLogin (request) :
 
 def qv (username = "", email = "", id = "") :
     #query Vertex
+    if username == None or email == None or id == None :
+        return None
     args = {}
     if username :
         args['username__exact'] = username
@@ -40,6 +42,8 @@ def qv (username = "", email = "", id = "") :
 
 def qe (pntid = "", chdid = "") :
     #query Edge
+    if pntid == None or chdid == None :
+        return None
     args = {}
     if pntid :
         args['pntid__exact'] = pntid
@@ -61,10 +65,11 @@ def addVertex (request) :
             isUsr = False
             username = vf.cleaned_data['username']
             email = vf.cleaned_data['email']
-            #Insert
-            Vertex.objects.create(isUsr=isUsr, username=username, email=email)
-            #Success
-            ac = 1
+            if username and email :
+                #Insert
+                Vertex.objects.create(isUsr=isUsr, username=username, email=email)
+                #Success
+                ac = 1
     vf = VertexForm()
     return render(request, 'addv.html', {'vf': vf, 'ac': ac})
 
@@ -83,11 +88,12 @@ def addEdge (request) :
             chdid = ef.cleaned_data['chdid']
             beginDate = ef.cleaned_data['beginDate']
             endDate = ef.cleaned_data['endDate']
-            #Check exist
-            if qv(id = pntid) and qv(id = chdid) :
-                #Insert
-                Edge.objects.create(pntid=pntid, chdid=chdid, beginDate=beginDate, endDate=endDate)
-                ac = 1
+            if pntid and chdid and beginDate and endDate :
+                #Check exist
+                if qv(id = pntid) and qv(id = chdid) :
+                    #Insert
+                    Edge.objects.create(pntid=pntid, chdid=chdid, beginDate=beginDate, endDate=endDate)
+                    ac = 1
     ef = EdgeForm()
     return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
@@ -136,6 +142,25 @@ def queryEdge (request) :
     pf = StudentIDForm()
     return render(request, 'qe.html', {'pf': pf, 'ac': ac, 'data': data})
 
+def vertexDetail (request) :
+    #Get vertex detail (graph generation)
+    #ac = -1 : no suck person, 0 : not a query, 1 : success
+    ac = -1
+    #res = [users] : query result
+    res = []
+    if request.method == 'GET' :
+        id = request.GET.get('id')
+        if id != None :
+            res = qv(id = id)
+            if res :
+                ac = 1
+    elif request.method == 'POST' :
+        id = request.POST.get('id')
+        if id != None :
+            res = qv(id = id)
+            if res :
+                ac = 1
+    return render(request, 'vertexDetail.html', {'ac': ac, 'data': res})
 
 def main (request) :
     if not checkLogin(request) :

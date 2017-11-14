@@ -31,6 +31,7 @@ urlpatterns = [
     url(r'^adde/$', rel_views.addEdge, name='adde'),
     url(r'^qid/$', rel_views.queryID, name='qid'),
     url(r'^qe/$', rel_views.queryEdge, name='qe'),
+    url(r'^vertexDetail/$', rel_views.vertexDetail, name='vertexDetail'), # for graph generation
     url(r'^gao/$', rel_views.main, name='gao'), # temp
     url(r'^gg/', gg_views.gg, name='GG'),
     url(r'^testData', gg_views.testData, name='GGWP'),
