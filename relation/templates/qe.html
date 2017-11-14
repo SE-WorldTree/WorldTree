@@ -111,6 +111,11 @@
                 </form>
             </div>
         </div>
+
+        <div id="graphviz_svg_div" align="center">
+          <!-- Target for dynamic svg generation -->
+        </div>
+
     </section>
 
     <footer>
@@ -121,5 +126,18 @@
             </h6>
         </div>
     </footer>
+
+<textarea id="v_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+{{ vv }}
+</textarea>
+
+<textarea id="e_data" rows="20" cols="80" width="100%" wrap="off" hidden = "true">
+{{ ee }}
+</textarea>
+
 </body>
+{% load staticfiles %}
+<script language="javascript" type="text/javascript" src="{% static 'jquery.min.js' %}"> </script>
+<script language="javascript" type="text/javascript" src="{% static 'viz.js' %}"></script>
+<script language="javascript" type="text/javascript" src="{% static 'site.js' %}"> </script>
 </html>

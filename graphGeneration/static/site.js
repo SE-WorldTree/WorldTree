@@ -70,8 +70,9 @@ jQuery(document).ready(function () {
 
         svg = svg.replace(/<!--[^<>]*-->/g, ""); // Remove wrong labels
 
-        svg_div.html(svg);
+        //svg_div.html(svg);
+        return svg;
     }
 
-    UpdateGraphviz();
+    svg_div.html(UpdateGraphviz());
 });

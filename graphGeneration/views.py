@@ -26,7 +26,7 @@ def ggwp (request) :
     vid = request.GET.get('id')
     #  vv : uid \n username \n
     #  ee : eid \n pntuid \n chduid \n
-    vv = '\n'.join('\n'.join([str(it.id), it.username]) for it in rel_views.qv() if str(it.id) == vid or rel_views.qe(chdid = it.id, pntid = vid) or rel_views.qe(chdid = vid, pntid = it.id))
+    vv = '\n'.join('\n'.join([str(it.id), it.username]) for it in rel_views.qv() if str(it.id) == str(vid) or rel_views.qe(chdid = it.id, pntid = vid) or rel_views.qe(chdid = vid, pntid = it.id))
     ee = ['\n'.join([str(rel.id), str(rel.pntid), str(rel.chdid)]) for rel in rel_views.qe(pntid = vid)] + ['\n'.join([str(rel.id), str(rel.pntid), str(rel.chdid)]) for rel in rel_views.qe(chdid = vid)]
     ee = '\n'.join(ee)
     return render(request, 'gg.html', {'vv': vv, 'ee': ee})

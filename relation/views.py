@@ -131,19 +131,32 @@ def queryEdge (request) :
     #ac = 1 : success, 0 : Get, -1 : error
     ac = 0
     data = []
+    id = None
     if request.method == 'POST' :
         ac = -1
         id = StudentIDForm(request.POST)
         if id.is_valid() :
             stu = qv(id = id.cleaned_data['id'])
             if stu :
+                id = stu[0].id
                 #Pnt
-                data = [[(pt, rel) for rel in qe(chdid = stu[0].id) for pt in qv(id = rel.pntid)]]
+                data = [[(pt, rel) for rel in qe(chdid = id) for pt in qv(id = rel.pntid)]]
                 #Chd
-                data.append([(ch, rel) for rel in qe(pntid = stu[0].id) for ch in qv(id = rel.chdid)])
+                data.append([(ch, rel) for rel in qe(pntid = id) for ch in qv(id = rel.chdid)])
                 ac = 1
     pf = StudentIDForm()
-    return render(request, 'qe.html', {'pf': pf, 'ac': ac, 'data': data})
+
+    vv = ""
+    ee = ""
+    if ac == 1 and id != None :
+        vid = id
+        #  vv : uid \n username \n
+        #  ee : eid \n pntuid \n chduid \n
+        vv = '\n'.join('\n'.join([str(it.id), it.username]) for it in qv() if str(it.id) == str(vid) or qe(chdid = it.id, pntid = vid) or qe(chdid = vid, pntid = it.id))
+        ee = ['\n'.join([str(rel.id), str(rel.pntid), str(rel.chdid)]) for rel in qe(pntid = vid)] + ['\n'.join([str(rel.id), str(rel.pntid), str(rel.chdid)]) for rel in qe(chdid = vid)]
+        ee = '\n'.join(ee)
+
+    return render(request, 'qe.html', {'pf': pf, 'ac': ac, 'data': data, 'vv': vv, 'ee': ee})
 
 def vertexDetail (request) :
     #Get vertex detail (graph generation) :: data = vertex
