@@ -54,6 +54,7 @@ def qe (pntid = "", chdid = "", id = "") :
     return Edge.objects.filter(**args)
 
 def addVertex (request) :
+    #Add vertex
     #Login check
     if not checkLogin(request) :
         return HttpResponseRedirect('/login/')
@@ -76,6 +77,7 @@ def addVertex (request) :
     return render(request, 'addv.html', {'vf': vf, 'ac': ac})
 
 def addEdge (request) :
+    #Add edge
     #Login check
     if not checkLogin(request) :
         return HttpResponseRedirect('/login/')
@@ -100,12 +102,12 @@ def addEdge (request) :
     return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
 def queryID (request) :
+    #Get vertex :: data = [vertex]
     #Login check
     if not checkLogin(request) :
         return HttpResponseRedirect('/login/')
     #ac = 1 : success, 0 : Get, -1 : error (not exist)
     ac = 0
-    #data : [[username, email, uid]]
     data = []
     if request.method == 'POST' :
         ac = -1
@@ -114,21 +116,20 @@ def queryID (request) :
             #Get data
             username = vf.cleaned_data['username']
             email = vf.cleaned_data['email']
-            ids = qv (username, email)
+            data = qv (username, email)
             #Check exist
-            if len(ids) :
-                data = [[id.username, id.email, id.id] for id in ids]
+            if len(data) :
                 ac = 1
     vf = VertexFormNr()
     return render(request, 'qid.html', {'vf': vf, 'ac': ac, 'data': data})
 
 def queryEdge (request) :
+    #Get edge :: data = [ [ (pnt, rel) ] , [ (chd, rel) ] ]
     #Login check
     if not checkLogin(request) :
         return HttpResponseRedirect('/login/')
     #ac = 1 : success, 0 : Get, -1 : error
     ac = 0
-    #data = [[[username, email, begindate, enddate]], [[username, email, begindate, enddate]]] ( [pnt,chd] )
     data = []
     if request.method == 'POST' :
         ac = -1
@@ -137,18 +138,20 @@ def queryEdge (request) :
             stu = qv(id = id.cleaned_data['id'])
             if stu :
                 #Pnt
-                data = [[[pt.username, pt.email, rel.beginDate, rel.endDate] for rel in qe(chdid = stu[0].id) for pt in qv(id = rel.pntid)]]
+                data = [[(pt, rel) for rel in qe(chdid = stu[0].id) for pt in qv(id = rel.pntid)]]
                 #Chd
-                data.append([[ch.username, ch.email, rel.beginDate, rel.endDate] for rel in qe(pntid = stu[0].id) for ch in qv(id = rel.chdid)])
+                data.append([(ch, rel) for rel in qe(pntid = stu[0].id) for ch in qv(id = rel.chdid)])
                 ac = 1
     pf = StudentIDForm()
     return render(request, 'qe.html', {'pf': pf, 'ac': ac, 'data': data})
 
 def vertexDetail (request) :
-    #Get vertex detail (graph generation)
+    #Get vertex detail (graph generation) :: data = vertex
+    #Login check
+    if not checkLogin(request) :
+        return HttpResponseRedirect('/login/')
     #ac = -1 : no suck person, 0 : not a query, 1 : success
     ac = -1
-    #res = [users] : query result
     res = []
     if request.method == 'GET' :
         id = request.GET.get('id')
@@ -162,13 +165,15 @@ def vertexDetail (request) :
             res = qv(id = id)
             if res :
                 ac = 1
-    return render(request, 'vertexDetail.html', {'ac': ac, 'data': res})
+    return render(request, 'vertexDetail.html', {'ac': ac, 'data': res[0]})
 
 def edgeDetail (request) :
-    #Get edge detail (graph generation)
+    #Get edge detail (graph generation) :: data = (edge, pnt, chd)
+    #Login check
+    if not checkLogin(request) :
+        return HttpResponseRedirect('/login/')
     #ac = -1 : no suck edge, 0 : not a query, 1 : success
     ac = -1
-    #res = [edge] : query result
     res = []
     pntdata = []
     chddata = []
@@ -191,7 +196,7 @@ def edgeDetail (request) :
             ac = 1
         else :
             ac = -1
-    return render(request, 'edgeDetail.html', {'ac': ac, 'data': res, 'pntdata': pntdata[0], 'chddata': chddata[0]})
+    return render(request, 'edgeDetail.html', {'ac': ac, 'data': (res[0], pntdata[0], chddata[0])})
 
 def main (request) :
     if not checkLogin(request) :
