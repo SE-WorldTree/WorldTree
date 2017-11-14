@@ -84,6 +84,7 @@
                     {% csrf_token %}
                     {% if ac == 0 %}
                         {{vf.as_p}}
+                        <input class="form-control" type="submit" value = "ok" />
                     {% elif ac == 1 %}
                         <table class="table table-hover table-striped">
                             <tr class="info"> <td> 人物id </td> <td> 姓名 </td><td> 邮箱 </td> </tr>
@@ -93,9 +94,7 @@
                                 </tr>
                             {% endfor %}
                         </table>
-
                     {% endif %}
-                    <input class="form-control" type="submit" value = "ok" />
                     <br>
                     <br>
                     <br>
