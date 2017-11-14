@@ -10,4 +10,7 @@ def testData (request) :
 
 def gg (request) :
     #Generate Graph
-    return render(request, 'gg.html', {'vv': '1\nmeow1\n2\nmeow2\n3\nmeow3', 'ee': '1\n1\n2\n2\n2\n3\n3\n3\n1'})
+    #Format:
+    #  vv : uid \n username \n
+    #  ee : eid \n pntuid \n chduid \n
+    return render(request, 'gg.html', {'vv': '1\nmeow3\n2\nmeow1\n3\nmeow2', 'ee': '1\n2\n3\n2\n3\n1\n3\n1\n2'})
