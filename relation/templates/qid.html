@@ -85,7 +85,8 @@
                     {% if ac == 0 %}
                         {{vf.as_p}}
                     {% elif ac == 1 %}
-                        <table>
+                        <table class="table table-hover table-striped">
+                            <tr class="info"> <td> 人物id </td> <td> 姓名 </td><td> 邮箱 </td> </tr>
                             {% for it in data %}
                                 <tr>
                                     <td>{{ it.id }}</td><td>{{ it.username }}</td><td>{{ it.email }}</td>

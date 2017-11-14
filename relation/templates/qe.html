@@ -87,22 +87,23 @@
                         {{pf.as_p}}
                         <input class="form-control" type="submit" value = "ok" />
                     {% elif ac == 1 %}
-                        <table>
-                            <tr> <td> 导师名称 </td> <td> &nbsp; </td> <td> 起始时间 </td> <td> &nbsp; </td> <td> 结束时间 </td> </tr>
+                        <div class="bs-example" data-example-id="bordered-table">
+                        <table class="table table-hover table-striped" >
+                            <tr class="info"> <td> 导师名称 </td> <td> &nbsp; </td><td> 起始时间 </td>  <td> &nbsp; </td><td> 结束时间 </td> </tr>
                             {% for pnt, rel in data.0 %}
                                 <tr>
                                     <td>{{ pnt.username }}</td><td> &nbsp; </td> <td>{{ rel.beginDate }}</td><td> &nbsp; </td> <td>{{ rel.endDate }}</td>
                                 </tr>
                             {% endfor %}
-                            <tr> <td> &nbsp; </td></tr>
-                            <tr> <td> &nbsp; </td></tr>
-                            <tr> <td> 学生名称 </td><td> &nbsp; </td> <td> 起始时间 </td> <td> &nbsp; </td><td> 结束时间 </td> </tr>
+                            <tr><td> &nbsp; </td><td> &nbsp; </td><td> &nbsp; </td><td> &nbsp; </td><td> &nbsp; </td></tr>
+                            <tr class="info"> <td> 学生名称 </td><td> &nbsp; </td> <td> 起始时间 </td> <td> &nbsp; </td><td> 结束时间 </td> </tr>
                             {% for chd, rel in data.1 %}
                                 <tr>
                                     <td>{{ chd.username }}</td><td> &nbsp; </td><td>{{ rel.beginDate }}</td><td> &nbsp; </td><td>{{ rel.endDate }}</td>
                                 </tr>
                             {% endfor %}
                         </table>
+                        </div>
                     {% endif %}
                     <br>
                     <br>
