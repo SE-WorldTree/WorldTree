@@ -80,7 +80,7 @@ def login(request):
             user = User.objects.filter(email__exact=email, password__exact=password)
             if user:
                 # 比较成功，跳转index
-                response = HttpResponseRedirect('/index/')
+                response = HttpResponseRedirect('/gao/')
                 # 将username写入浏览器cookie,失效时间为3600
                 response.set_cookie('email', email, 3600)
                 return response
