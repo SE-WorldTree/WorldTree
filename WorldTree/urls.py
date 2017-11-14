@@ -14,11 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
 import userManagement.views as um_views
 import relation.views as rel_views
+from django.conf import settings
 import graphGeneration.views as gg_views
 import graphGeneration.templates as gg_tmp
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -31,8 +34,9 @@ urlpatterns = [
     url(r'^adde/$', rel_views.addEdge, name='adde'),
     url(r'^qid/$', rel_views.queryID, name='qid'),
     url(r'^qe/$', rel_views.queryEdge, name='qe'),
-    url(r'^vertexDetail/$', rel_views.vertexDetail, name='vertexDetail'), # for graph generation
+    url(r'^vertexDetail/$', rel_views.vertexDetail, nagime='vertexDetail'), # for graph generation
     url(r'^gao/$', rel_views.main, name='gao'), # temp
     url(r'^gg/', gg_views.gg, name='GG'),
     url(r'^testData', gg_views.testData, name='GGWP'),
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+

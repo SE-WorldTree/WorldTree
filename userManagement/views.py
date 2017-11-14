@@ -1,19 +1,55 @@
 from django.shortcuts import render, render_to_response
 from django.http import HttpResponse, HttpResponseRedirect
-from django.template import RequestContext
 from django import forms
 from userManagement.models import User
 
 
 class UserRegisterForm(forms.Form):
-    username = forms.CharField(label='姓名', max_length=100)
-    email = forms.CharField(label="邮箱", max_length=100)
-    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    username = forms.CharField(label='姓名',
+                               max_length=100,
+                               error_messages={'required': "姓名不能为空"})
+    email = forms.EmailField(label="邮箱",
+                             max_length=100,
+                             error_messages={'required': "邮箱不能为空",
+                                             'invalid': "邮箱格式错误"})
+    password = forms.CharField(label='密码',
+                               widget=forms.PasswordInput(),
+                               max_length=20,
+                               min_length=6,
+                               error_messages={'required': "密码不能为空"})
+    password2 = forms.CharField(label='确认密码',
+                                widget=forms.PasswordInput(),
+                                max_length=20,
+                                min_length=6,
+                                error_messages={'required': "密码不能为空"})
+
+    def clean_password2(self):
+        password_1 = self.cleaned_data['password']
+        password_2 = self.cleaned_data['password2']
+        if password_1 and password_2 and password_1 != password_2:
+            raise forms.ValidationError('密码验证失败', code='invalid')
+        return password_2
+
+    def clean_email(self):
+        try:
+            email = self.cleaned_data['email']
+        except:
+            raise forms.ValidationError("邮箱输入错误")
+        if User.objects.filter(email__exact=self.cleaned_data['email']).exists():
+            raise forms.ValidationError("该邮箱已存在")
+        return email
 
 
 class UserLoginForm(forms.Form):
-    email = forms.CharField(label="邮箱", max_length=100)
-    password = forms.CharField(label='密码', widget=forms.PasswordInput())
+    email = forms.EmailField(label="邮箱",
+                             max_length=100,
+                             error_messages={'required': "邮箱不能为空",
+                                             'invalid': "邮箱格式错误"})
+    password = forms.CharField(label='密码',
+                               widget=forms.PasswordInput(),
+                               max_length=20,
+                               min_length=6,
+                               error_messages={'required': "密码不能为空"})
 
 
 def register(request):
@@ -26,9 +62,10 @@ def register(request):
             password = uf.cleaned_data['password']
             # 添加到数据库
             User.objects.create(username=username, email=email, password=password)
-            return HttpResponse('register success!!')
+            return HttpResponseRedirect('/login/?info=register_success')
     else:
         uf = UserRegisterForm()
+    print(uf)
     return render(request, 'register.html', {'uf': uf})
 
 
@@ -49,7 +86,7 @@ def login(request):
                 return response
             else:
                 # 比较失败，还在login
-                return HttpResponseRedirect('/login/')
+                return HttpResponseRedirect('/login/?info=login_fail')
     else:
         uf = UserLoginForm()
     return render(request, 'login.html', {'uf': uf})
