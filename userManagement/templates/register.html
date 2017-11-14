@@ -1,19 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+{% load staticfiles %}
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>注册</title>
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" media="screen" href="{% static "css/bootstrap.min.css" %}"/>
+    <link rel="stylesheet" href="{%  static "css/font-awesome.min.css" %}"/>
+    <link rel="stylesheet" href="{%  static "fonts/icon-7-stroke/css/pe-icon-7-stroke.css" %}"/>
+    <link rel="stylesheet" media="screen" href="{%  static "css/animate.css" %}"/>
+    <link rel="stylesheet" href="{%  static "css/owl.theme.css" %}"/>
+    <link rel="stylesheet" href="{%  static "css/owl.carousel.css" %}"/>
+
+    <!-- Colors -->
+    <link rel="stylesheet" media="screen" href="{%  static "css/css-index.css" %}">
+
+    <!-- Google Fonts -->
+    <link rel="stylesheet" href="http://fonts.googleapis.com/
+    css?family=Lato:100,300,400,700,900,100italic,300italic,400italic,700italic,900italic" />
+
 </head>
 
-<body>
-<h1>注册页面：</h1>
-<form method = 'post' enctype="multipart/form-data">
-    {% csrf_token %}
-    {{uf.as_p}}
-    <input type="submit" value = "ok" />
-</form>
-<br>
-<a href="/login/">登陆</a>
+<body data-spy="scroll" data-target="#navbar-scroll">
+
+<!-- /.parallax full screen background image -->
+<div class="fullscreen landing parallax" style="background-image:url({%  static 'images/bg.jpg' %});"
+     data-img-width="2000" data-img-height="1333" data-diff="100">
+
+	<div class="overlay">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-7">
+
+					<!-- /.logo -->
+					<div class="logo wow fadeInDown">
+                        <a href=""><img src={%  static "images/logo1.png" %}></a>
+                    </div>
+
+					<!-- /.main title -->
+						<h1 class="wow fadeInLeft">
+						World Tree -- Efficient Academic Relation Information Management.
+						</h1>
+
+					<!-- /.header paragraph -->
+					<div class="landing-text wow fadeInUp">
+						<p>World Tree is committed to the efficient management of your academic relation information. It
+                        can record your teachers, students and your colleagues.</p>
+					</div>
+
+				</div>
+
+                <!-- /.signup form -->
+				<div class="col-md-5">
+
+					<div class="signup-header wow fadeInUp">
+
+                    <h3 class="form-title text-center">Sign up：</h3>
+                    <form action="" class="form-header" method = 'post' enctype="multipart/form-data">
+                        {% csrf_token %}
+
+                        <div class="form-group">
+								<input class="form-control input-lg" name="username" id="id_username" type="text" placeholder="Your Name" maxlength="100" required>
+                        </div>
+
+                        <div class="form-group">
+								<input class="form-control input-lg" name="email" id="id_email" type="email" placeholder="Your Email" maxlength="100" required>
+                        </div>
+
+                        <div class="form-group">
+								<input class="form-control input-lg" name="password" id="id_password" type="password" placeholder="Your Password" maxlength="20" minlength="6" required>
+                        </div>
+
+                        <div class="form-group">
+								<input class="form-control input-lg" name="password2" id="id_password2" type="password" placeholder="Confirm Your Password" maxlength="20" minlength="6" required>
+                        </div>
+
+                        <div class="form-group last">
+                            <input type="submit" class="btn btn-warning btn-block btn-lg" value = "注册" />
+                        </div>
+                    </form>
+                        <br>
+                        <a href="/login/" class="btn btn-warning btn-block btn-lg">登录</a>
+                        <br>
+
+                    </div>
+				</div>
+            </div>
+		</div>
+	</div>
+</div>
+
+    <!-- /.javascript files -->
+    <script src="{% static  "js/jquery.js" %}"></script>
+    <script src="{% static  "js/bootstrap.min.js" %}"></script>
+    <script src="{% static  "js/custom.js" %}"></script>
+    <script src="{% static  "js/jquery.sticky.js" %}"></script>
+    <script src="{% static  "js/wow.min.js" %}"></script>
+    <script src="{% static  "js/owl.carousel.min.js" %}"></script>
+    <script>
+		new WOW().init();
+	</script>
 </body>
+
 </html>

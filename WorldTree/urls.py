@@ -14,9 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
+from django.conf.urls.static import static
 from django.contrib import admin
 import userManagement.views as um_views
 import relation.views as rel_views
+from django.conf import settings
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -30,4 +32,4 @@ urlpatterns = [
     url(r'^qid/$', rel_views.queryID, name='qid'),
     url(r'^qe/$', rel_views.queryEdge, name='qe'),
     url(r'^gao/$', rel_views.main, name='gao'), # temp
-]
+] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
