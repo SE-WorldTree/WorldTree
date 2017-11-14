@@ -36,7 +36,7 @@ jQuery(document).ready(function () {
         var arrs = new Array(1+sizv+size+1);
         arrs[0] = "digraph G {";
         for (var i = 0 ; i < sizv ; i++)
-            arrs[i+1] = arrv[i*2] + " [ label = \"" + arrv[i*2+1] + "\" ]; ";
+            arrs[i+1] = arrv[i*2] + " [ label = \"" + arrv[i*2+1] + "\", shape = doubleoctagon]; ";
         for (i = 0 ; i < size ; i++)
             arrs[i+1+sizv] = arre[i*3+1] + " -> " + arre[i*3+2] + "; ";
         arrs[1+sizv+size] = "}";

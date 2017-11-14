@@ -38,6 +38,6 @@ urlpatterns = [
     url(r'^edgeDetail/$', rel_views.edgeDetail, name='edgeDetail'), # for graph generation
     url(r'^gao/$', rel_views.main, name='gao'), # temp
     url(r'^gg/', gg_views.gg, name='GG'),
-    url(r'^testData', gg_views.testData, name='GGWP'),
+    url(r'^ggwp/', gg_views.ggwp, name='GGWP'),
 ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
 
