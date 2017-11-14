@@ -1,0 +1,16 @@
+<html>
+
+<body>
+<table>
+    <tr> <td> UserID </td> <td> Username </td> <td> Email </td> </tr>
+    {% for it in data %}
+    <tr>
+        <td> {{ it.id }} </td>
+        <td> {{ it.username }} </td>
+        <td> {{ it.email }} </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+
+</html>

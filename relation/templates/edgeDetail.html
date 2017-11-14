@@ -1,0 +1,17 @@
+<html>
+
+<body>
+<table>
+    <tr> <td> PntName </td> <td> ChdName </td> <td> BeginDate </td> <td> EndDate </td> </tr>
+    {% for it in data %}
+    <tr>
+        <td> <a href = "/vertexDetail?id={{ it.pntid }}"> {{ pntdata.username }} </a> </td>
+        <td> <a href = "/vertexDetail?id={{ it.chdid }}"> {{ chddata.username }} </a> </td>
+        <td> {{ it.beginDate }} </td>
+        <td> {{ it.endDate }} </td>
+    </tr>
+    {% endfor %}
+</table>
+</body>
+
+</html>

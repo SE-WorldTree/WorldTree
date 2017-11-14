@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+import relation.views as rel_views
 
 # Create your views here.
 
@@ -13,4 +14,6 @@ def gg (request) :
     #Format:
     #  vv : uid \n username \n
     #  ee : eid \n pntuid \n chduid \n
-    return render(request, 'gg.html', {'vv': '1\nmeow3\n2\nmeow1\n3\nmeow2', 'ee': '1\n2\n3\n2\n3\n1\n3\n1\n2'})
+    vv = '\n'.join('\n'.join([str(it.id), it.username]) for it in rel_views.qv())
+    ee = '\n'.join('\n'.join([str(rel.id), str(rel.pntid), str(rel.chdid)]) for rel in rel_views.qe())
+    return render(request, 'gg.html', {'vv': vv, 'ee': ee})

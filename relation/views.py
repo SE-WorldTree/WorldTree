@@ -40,15 +40,17 @@ def qv (username = "", email = "", id = "") :
         args['id__exact'] = id
     return Vertex.objects.filter(**args)
 
-def qe (pntid = "", chdid = "") :
+def qe (pntid = "", chdid = "", id = "") :
     #query Edge
-    if pntid == None or chdid == None :
+    if pntid == None or chdid == None or id == None :
         return None
     args = {}
     if pntid :
         args['pntid__exact'] = pntid
     if chdid :
         args['chdid__exact'] = chdid
+    if id :
+        args['id__exact'] = id
     return Edge.objects.filter(**args)
 
 def addVertex (request) :
@@ -161,6 +163,35 @@ def vertexDetail (request) :
             if res :
                 ac = 1
     return render(request, 'vertexDetail.html', {'ac': ac, 'data': res})
+
+def edgeDetail (request) :
+    #Get edge detail (graph generation)
+    #ac = -1 : no suck edge, 0 : not a query, 1 : success
+    ac = -1
+    #res = [edge] : query result
+    res = []
+    pntdata = []
+    chddata = []
+    if request.method == 'GET' :
+        id = request.GET.get('id')
+        if id != None :
+            res = qe(id = id)
+            if res :
+                ac = 1
+    elif request.method == 'POST' :
+        id = request.POST.get('id')
+        if id != None :
+            res = qe(id = id)
+            if res :
+                ac = 1
+    if ac == 1 :
+        pntdata = qv(id = res[0].pntid)
+        chddata = qv(id = res[0].chdid)
+        if pntdata and chddata :
+            ac = 1
+        else :
+            ac = -1
+    return render(request, 'edgeDetail.html', {'ac': ac, 'data': res, 'pntdata': pntdata[0], 'chddata': chddata[0]})
 
 def main (request) :
     if not checkLogin(request) :

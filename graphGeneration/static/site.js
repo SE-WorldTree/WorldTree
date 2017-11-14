@@ -27,9 +27,11 @@ jQuery(document).ready(function () {
 	    svg_div.html("");
         // Generate the Visualization of the Graph into "svg".
         var arrv = jQuery('#v_data').val().split('\n');
-        var sizv = (arrv.length - arrv.length%2)/2;
         var arre = jQuery('#e_data').val().split('\n');
-        var size = (arre.length - arre.length%3)/3;
+        var sizv = arrv.length - 1;
+        sizv = (sizv - sizv % 2) / 2;
+        var size = arre.length - 1;
+        size = (size - size % 3) / 3;
 
         var arrs = new Array(1+sizv+size+1);
         arrs[0] = "digraph G {";
