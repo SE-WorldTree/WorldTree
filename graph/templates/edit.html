@@ -1,7 +1,8 @@
+{{ ac }}
 <div>
-<table method = 'post' enctype="multipart/form-data">
+<form method = 'post' enctype="multipart/form-data">
     {% csrf_token %}
-    {{vf.as_table}}
-    <tr> <td> </td> <td> <input class="form-control" type="submit" value = "ok" /> </td> </tr>
-</table>
+    {{vf.as_p}}
+    <input class="form-control" type="submit" value = "ok" />
+</form>
 </div>

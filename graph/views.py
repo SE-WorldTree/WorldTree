@@ -2,7 +2,7 @@ from django.shortcuts import render
 from .models import node, edge
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
-from .forms import nodeForm, newnodeForm
+from .forms import nodeForm, newnodeForm, edgeForm
 
 # Create your views here.
 
@@ -60,12 +60,16 @@ def removeNode (id) :
     node.objects.filter(id=id).delete()
     return r
 
+def existNode (id) :
+    return node.objects.filter(id=id).count() == 1
+
 def mergeNode (id1, id2) :
     if node.objects.filter(id=id1).count() == 1 and node.objects.filter(id=id2).count() == 1 :
         node.objects.filter(id=id2).update(node.objects.get(id=id1).__args__())
         node.objects.filter(id=id1).update(node.objects.get(id=id2).__args__())
         edge.objects.filter(pntid=id2).update(pntid=id1)
         edge.objects.filter(chdid=id2).update(chdid=id1)
+        edge.objects.filter(pntid=id1, chdid=id1).delete() # self loop
         node.objects.filter(id=id2).delete()
         return 1
     else :
@@ -163,11 +167,37 @@ def HeditNode (request, id) :
             checkArgs(nf)
             updateNode(id, **nf)
             return HttpResponseRedirect(reverse('graph:profile', args=[id]))
-    print(nd[0].__dict__)
+    #print(nd[0].__dict__)
     vf = nodeForm(initial=nd[0].__dict__)
-    return render(request, 'edit.html', {'vf':vf, 'id':id})
+    return render(request, 'edit.html', {'vf':vf, 'id':id, 'ac': ac})
 
+def HremoveNode (request, id) :
+    if not checkLogin(request) :
+        return HttpResponseRedirect(reverse('users:login'))
+    ac = -1
+    nd = queryNode(id=id)
+    if len(nd) != 1 :
+        return HnoNode()
+    if (not DEBUG and request.user.id != nd[0].uid) or nd[0].isusr :
+        return HttpResponseRedirect(reverse('graph:profile', args=[id]))
+    removeNode(id)
+    return HttpResponseRedirect(reverse('index'))
 
+def HaddEdge (request) :
+    if not checkLogin(request) :
+        return HttpResponseRedirect(reverse('users:login'))
+    ac = 0
+    if request.method == 'POST' :
+        ac = -1
+        ef = edgeForm(request.POST)
+        if ef.is_valid() :
+            ef = ef.cleaned_data
+            if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
+                ac = 1
+                addEdge(request.user.id, **ef)
+                return HttpResponseRedirect(reverse('graph:adde'))
+    ef = edgeForm()
+    return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
 def tmp (request) :
     addNode(1,'p1')
