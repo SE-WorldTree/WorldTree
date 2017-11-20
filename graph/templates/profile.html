@@ -1,0 +1,7 @@
+<div>
+<table>
+    {% csrf_token %}
+    {{vf.as_table}}
+</table>
+</div>
+<a href = "{% url 'graph:edit' id %}"> Edit </a>
