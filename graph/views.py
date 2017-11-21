@@ -15,14 +15,16 @@ checkLogin
 url: nodenotfound
 """
 
-def send (*wargs) :
-    pass
+HnoNode = lambda : HttpResponse('No such person')
+HnoEdge = lambda : HttpResponse('No such relation')
+send = lambda uid, eid, op : HttpResponse('Send')
 
 def checkLogin (request) :
     if DEBUG :
         return True
     else :
         return request.user.is_authenticated()
+
 
 def checkArgs (args) :
     for word in ['id', 'name', 'isusr', 'uid'] :
@@ -86,9 +88,9 @@ def addEdge (uid, pntid, chdid, beginDate, endDate) :
             cnt = cnt + 1
         eid = edge.objects.create(pntid=pntid, chdid=chdid, beginDate=beginDate, endDate=endDate, cnt=cnt).id
         if uid != pnt[0].uid :
-            send(pnt[0].uid, eid)
+            send(pnt[0].uid, eid, 1)
         if uid != chd[0].uid :
-            send(chd[0].uid, eid)
+            send(chd[0].uid, eid, 1)
         return 1
     else :
         return -1
@@ -108,7 +110,10 @@ def queryEdge (id = "", pntid = "", chdid = "", visit = True) :
 def updateEdge (id) :
     if edge.objects.filter(id=id).count() == 1 :
         cnt = edge.objects.get(id=id).cnt
-        node.objects.filter(id=id).update(cnt=cnt-1)
+        if cnt == 0 :
+            edge.objects.filter(id=id).delete()
+        else :
+            edge.objects.filter(id=id).update(cnt=cnt-1)
         return 1
     else :
         return -1
@@ -120,8 +125,6 @@ def removeEdge (id) :
     return r
 
 
-def HnoNode() :
-    return HttpResponse('No such person!')
 
 def Hprofile (request, id) :
     if not checkLogin(request) :
@@ -199,7 +202,23 @@ def HaddEdge (request) :
     ef = edgeForm()
     return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
+def HremoveEdge (request, id) :
+    if not checkLogin(request) :
+        return HttpResponseRedirect(reverse('users:login'))
+    ac = -1
+    eg = queryEdge(id=id)
+    if len(eg) != 1 :
+        return HnoEdge()
+    eg = eg[0]
+    if DEBUG or eg.pndid == request.user.id or eg.chdid == request.user.id :
+        removeEdge(id=id)
+    else :
+        send(eg.pntid, id, -1)
+        send(eg.chdid, id, -1)
+    ac = 1
+    return HttpResponseRedirect(reverse('index'))
+
 def tmp (request) :
     addNode(1,'p1')
     addNode(1,'p2')
-    return HttpResponse('<br/>'.join(str(i) for i in queryNode()))
+    return HttpResponse('<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False)))
