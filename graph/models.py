@@ -13,6 +13,8 @@ class node (models.Model) :
     blog = models.CharField(max_length=50)
     linkedin = models.CharField(max_length=50)
     ggsc = models.CharField(max_length=50)
+    institute = models.CharField(max_length=50)
+
 
     def __args__ (self) :
         args = []
@@ -38,8 +40,8 @@ class edge (models.Model) :
     # id
     pntid = models.IntegerField()
     chdid = models.IntegerField()
-    beginDate = models.DateField()
-    endDate = models.DateField()
+    beginDate = models.IntegerField()
+    endDate = models.IntegerField()
 
     cnt = models.IntegerField()
 

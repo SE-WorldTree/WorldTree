@@ -3,10 +3,11 @@ from .models import node, edge
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
 from .forms import nodeForm, newnodeForm, edgeForm
+from users.models import User
 
 # Create your views here.
 
-DEBUG = True
+#DEBUG = False
 
 """
 send
@@ -19,12 +20,16 @@ HnoNode = lambda : HttpResponse('No such person')
 HnoEdge = lambda : HttpResponse('No such relation')
 send = lambda uid, eid, op : HttpResponse('Send')
 
-def checkLogin (request) :
+"""
+def checkLogin (request, needU = True) :
     if DEBUG :
         return True
-    else :
-        return request.user.is_authenticated()
-
+    if not request.user.is_authenticated() :
+        return HttpResponseRedirect(reverse('users:login'))
+    if needU and request.user.id < 0 :
+        return HttpResponseRedirect(reverse('graph:newNode'))
+    return True
+"""
 
 def checkArgs (args) :
     for word in ['id', 'name', 'isusr', 'uid'] :
@@ -127,18 +132,35 @@ def removeEdge (id) :
 
 
 def Hprofile (request, id) :
-    if not checkLogin(request) :
-        return HttpResponseRedirect(reverse('users:login'))
+    if not DEBUG :
+        print('/')
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     r = queryNode(id=id)
     if len(r) != 1 :
         return HnoNode()
     r[0].__dict__.pop('id')
     vf = nodeForm(initial=r[0].__dict__)
+
+    pntedge = queryEdge(chdid = id)
+    pnt = [queryNode(id=eg.pntid)[0] for eg in pntedge]
+    chdedge = queryEdge(pntid = id)
+    chd = [queryNode(id=eg.chdid)[0] for eg in chdedge]
+    broedge = [eg for pntid in [i.id for i in pnt] for eg in queryEdge(pntid = pntid)]
+    bro = [queryNode(id=eg.chdid)[0] for eg in broedge]
+
+    #json
+
     return render(request, 'profile.html', {'vf': vf, 'id': id})
 
 def HaddNode (request) :
-    if not checkLogin(request) :
-        return HttpResponseRedirect(reverse('users:login'))
+    if not DEBUG :
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -151,9 +173,28 @@ def HaddNode (request) :
     vf = newnodeForm()
     return render(request, 'addv.html', {'vf':vf, 'ac':ac})
 
-def HeditNode (request, id) :
-    if not checkLogin(request) :
+def HnewNode (request) :
+    if not DEBUG and not request.user.is_authenticated() :
         return HttpResponseRedirect(reverse('users:login'))
+    ac = 0
+    if request.method == 'POST' :
+        ac = -1
+        nf = newnodeForm(request.POST)
+        if nf.is_valid() :
+            ac = 1
+            nf = nf.cleaned_data
+            id = addNode(uid=request.user.id, isusr=True, **nf).id
+            User.objects.filter(id = request.user.id).update(node_id = id)
+            return HttpResponseRedirect(reverse('graph:profile', args=[id]))
+    vf = newnodeForm()
+    return render(request, 'addv.html', {'vf':vf, 'ac':ac})
+
+def HeditNode (request, id) :
+    if not DEBUG :
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     nd = queryNode(id=id)
     if len(nd) != 1 :
         return HnoNode()
@@ -175,8 +216,11 @@ def HeditNode (request, id) :
     return render(request, 'edit.html', {'vf':vf, 'id':id, 'ac': ac})
 
 def HremoveNode (request, id) :
-    if not checkLogin(request) :
-        return HttpResponseRedirect(reverse('users:login'))
+    if not DEBUG :
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     ac = -1
     nd = queryNode(id=id)
     if len(nd) != 1 :
@@ -187,8 +231,11 @@ def HremoveNode (request, id) :
     return HttpResponseRedirect(reverse('index'))
 
 def HaddEdge (request) :
-    if not checkLogin(request) :
-        return HttpResponseRedirect(reverse('users:login'))
+    if not DEBUG :
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -203,8 +250,11 @@ def HaddEdge (request) :
     return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
 def HremoveEdge (request, id) :
-    if not checkLogin(request) :
-        return HttpResponseRedirect(reverse('users:login'))
+    if not DEBUG :
+        if not request.user.is_authenticated() :
+            return HttpResponseRedirect(reverse('users:login'))
+        if request.user.node_id < 0 :
+            return HttpResponseRedirect(reverse('graph:newNode'))
     ac = -1
     eg = queryEdge(id=id)
     if len(eg) != 1 :
@@ -219,6 +269,8 @@ def HremoveEdge (request, id) :
     return HttpResponseRedirect(reverse('index'))
 
 def tmp (request) :
-    addNode(1,'p1')
-    addNode(1,'p2')
-    return HttpResponse('<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False)))
+    res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
+    res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(DEBUG))
+    res.replace('\n', '<br>')
+    return HttpResponse(res)
+
