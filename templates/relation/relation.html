@@ -26,7 +26,6 @@
 
         <nav class="navbar navbar-ct-blue navbar-transparent navbar-fixed-top" role="navigation">
 
-
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -86,7 +85,7 @@
                             <li><a href="{% url 'users:register' %}">注册</a></li>
 
                             <li>
-                                <button href="{% url 'users:login' %}" class="btn btn-round btn-default">登录</button>
+                                <button href="{% url 'login' %}" class="btn btn-round btn-default">登录</button>
                             </li>
                         </ul>
                     {% endif %}
@@ -95,92 +94,155 @@
             </div><!-- /.container-fluid -->
         </nav>
         <div class="blurred-container">
-            <div class="img-src" style="background-image: url({% static 'assets/img/bg.jpg' %})"></div>
+            <div class="img-src" style="background-image: url('assets/img/bg.jpg')"></div>
         </div>
     </div><!--  end navbar -->
 
 </div> <!-- end menu-dropdown -->
 
-<!--
-<div class="flex-center">
-    <div class="container">
-        <div>
-            <h1 class="logo"><a href="{% url 'index' %}">Django Auth Example</a></h1>
-            {% if user.is_authenticated %}
-                <p>你已登录，欢迎你：<a href="#">{{ user.username }}</a></p>
-                <button class="btn btn-default"><a href="{% url 'logout' %}">注销登录</a></button>
-            {% else %}
-                <p>你还没有登录，请
-                    <button class="btn btn-default"><a href="{% url 'login' %}">登录</a></button>
-                    或者
-                    <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
-                </p>
-            {% endif %}
-        </div>
-    </div>
-</div>
--->
 
-<div class="section" id="carousel">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                {% if user.is_authenticated %}
-
-                {% else %}
-                <!-- Carousel Card -->
-                <div class="card card-raised card-carousel">
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <div class="carousel slide" data-ride="carousel">
-
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <div class="item active">
-                                    <img src="{% static 'assets/img/bg2.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Yellowstone National Park, United
-                                            States</h4>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="{% static 'assets/img/bg3.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Somewhere Beyond, United States
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="{% static 'assets/img/bg4.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Yellowstone National Park, United
-                                            States</h4>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <i class="material-icons">keyboard_arrow_right</i>
-                            </a>
-                        </div>
-                    </div>
+<div class="main main-raised">
+    <div class="section section-basic">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8 col-md-offset-2">
+                    <button class="btn" data-toggle="modal" data-target="#adde">添加点</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#addv">添加边</button>
+                    <button class="btn btn-info" data-toggle="modal" data-target="#dele">删除点</button>
+                    <button class="btn btn-success" data-toggle="modal" data-target="#delv">删除边</button>
+                    <button class="btn btn-warning" data-toggle="modal" data-target="#qr">查询关系</button>
                 </div>
-                <!-- End Carousel Card -->
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+
+<!-- Sart Modal -->
+<div class="modal fade" id="adde" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+<!-- Sart Modal -->
+<div class="modal fade" id="addv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+<!-- Sart Modal -->
+<div class="modal fade" id="dele" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+<!-- Sart Modal -->
+<div class="modal fade" id="delv" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
+<!-- Sart Modal -->
+<div class="modal fade" id="qr" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+					<i class="material-icons">clear</i>
+				</button>
+				<h4 class="modal-title">Modal title</h4>
+			</div>
+			<div class="modal-body">
+
+
+
+
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-simple" data-dismiss="modal">确定</button>
+			</div>
+		</div>
+	</div>
+</div>
+<!--  End Modal -->
+
 
 
 </body>
@@ -210,5 +272,4 @@
 
 		});
 	</script>
-
 </html>

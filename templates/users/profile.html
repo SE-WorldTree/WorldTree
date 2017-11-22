@@ -26,7 +26,6 @@
 
         <nav class="navbar navbar-ct-blue navbar-transparent navbar-fixed-top" role="navigation">
 
-
             <div class="container">
                 <!-- Brand and toggle get grouped for better mobile display -->
                 <div class="navbar-header">
@@ -86,7 +85,7 @@
                             <li><a href="{% url 'users:register' %}">注册</a></li>
 
                             <li>
-                                <button href="{% url 'users:login' %}" class="btn btn-round btn-default">登录</button>
+                                <button href="{% url 'login' %}" class="btn btn-round btn-default">登录</button>
                             </li>
                         </ul>
                     {% endif %}
@@ -94,94 +93,92 @@
                 </div><!-- /.navbar-collapse -->
             </div><!-- /.container-fluid -->
         </nav>
-        <div class="blurred-container">
-            <div class="img-src" style="background-image: url({% static 'assets/img/bg.jpg' %})"></div>
-        </div>
     </div><!--  end navbar -->
 
 </div> <!-- end menu-dropdown -->
 
-<!--
-<div class="flex-center">
-    <div class="container">
-        <div>
-            <h1 class="logo"><a href="{% url 'index' %}">Django Auth Example</a></h1>
-            {% if user.is_authenticated %}
-                <p>你已登录，欢迎你：<a href="#">{{ user.username }}</a></p>
-                <button class="btn btn-default"><a href="{% url 'logout' %}">注销登录</a></button>
-            {% else %}
-                <p>你还没有登录，请
-                    <button class="btn btn-default"><a href="{% url 'login' %}">登录</a></button>
-                    或者
-                    <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
-                </p>
-            {% endif %}
-        </div>
-    </div>
-</div>
--->
 
-<div class="section" id="carousel">
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2">
-                {% if user.is_authenticated %}
+<div class="wrapper">
+    <div class="header header-filter" style="background-image: url({% static' assets/img/examples/city.jpg' %});"></div>
 
-                {% else %}
-                <!-- Carousel Card -->
-                <div class="card card-raised card-carousel">
-                    <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-                        <div class="carousel slide" data-ride="carousel">
-
-                            <!-- Indicators -->
-                            <ol class="carousel-indicators">
-                                <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-                                <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-                            </ol>
-
-                            <!-- Wrapper for slides -->
-                            <div class="carousel-inner">
-                                <div class="item active">
-                                    <img src="{% static 'assets/img/bg2.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Yellowstone National Park, United
-                                            States</h4>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="{% static 'assets/img/bg3.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Somewhere Beyond, United States
-                                        </h4>
-                                    </div>
-                                </div>
-                                <div class="item">
-                                    <img src="{% static 'assets/img/bg4.jpeg' %}" alt="Awesome Image">
-                                    <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Yellowstone National Park, United
-                                            States</h4>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Controls -->
-                            <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
-                                <i class="material-icons">keyboard_arrow_left</i>
-                            </a>
-                            <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
-                                <i class="material-icons">keyboard_arrow_right</i>
-                            </a>
+    <div class="main main-raised">
+        <div class="profile-content">
+            <div class="container">
+                <div class="row">
+                    <div class="profile">
+                        <div class="avatar">
+                            <img src="{% static 'assets/img/christian.jpg' %}" alt="Circle Image"
+                                 class="img-circle img-responsive img-raised">
+                        </div>
+                        <div class="name">
+                            <h3 class="title">Christian Louboutin</h3>
+                            <h6>Designer</h6>
                         </div>
                     </div>
                 </div>
-                <!-- End Carousel Card -->
-                {% endif %}
+                <div class="description text-center">
+                    <p>AAA </p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="profile-tabs">
+                            <div class="nav-align-center">
+                                <ul class="nav nav-pills" role="tablist">
+                                    <li class="active">
+                                        <a href="#studio" role="tab" data-toggle="tab">
+                                            <i class="material-icons">camera</i>
+                                            个人头像
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#work" role="tab" data-toggle="tab">
+                                            <i class="material-icons">palette</i>
+                                            工作经历
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#shows" role="tab" data-toggle="tab">
+                                            <i class="material-icons">face</i>
+                                            基本信息
+                                        </a>
+                                    </li>
+                                </ul>
+
+                                <div class="tab-content gallery">
+                                    <div class="tab-pane active" id="studio">
+
+                                    </div>
+                                    <div class="tab-pane text-center" id="work">
+                                        <div class="row">
+
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane text-center" id="shows">
+                                        <div class="row">
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                        <!-- End Profile Tabs -->
+                    </div>
+                </div>
+
             </div>
         </div>
     </div>
-</div>
 
+</div>
+<footer class="footer">
+    <div class="container">
+        <div class="copyright pull-right">
+            &copy; 2017, made with <i class="fa fa-heart heart"></i> by Holynova
+        </div>
+    </div>
+</footer>
 
 </body>
     <script src="{% static 'jquery/jquery-1.10.2.js' %}" type="text/javascript"></script>
@@ -210,5 +207,4 @@
 
 		});
 	</script>
-
 </html>
