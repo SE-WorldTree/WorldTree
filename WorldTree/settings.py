@@ -132,3 +132,4 @@ EMAIL_HOST_USER = "seworldtree@outlook.com"   # 账号
 EMAIL_HOST_PASSWORD = "Qwertier"  # 密码
 EMAIL_USE_TLS = True             # 一般都为False
 EMAIL_FROM = "seworldtree@outlook.com"        # 邮箱来自
+DEFAULT_FROM_EMAIL = "seworldtree@outlook.com"
