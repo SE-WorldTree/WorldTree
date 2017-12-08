@@ -121,6 +121,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
 AUTH_USER_MODEL = 'users.User'
 
 EMAIL_HOST = "smtp-mail.outlook.com"   # 服务器
