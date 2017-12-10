@@ -122,4 +122,15 @@ USE_TZ = True
 STATIC_URL = 'static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'templates/static')
 
+LOGOUT_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = '/'
+
 AUTH_USER_MODEL = 'users.User'
+
+EMAIL_HOST = "smtp-mail.outlook.com"   # 服务器
+EMAIL_PORT = 587               # 一般情况下都为25
+EMAIL_HOST_USER = "seworldtree@outlook.com"   # 账号
+EMAIL_HOST_PASSWORD = "Qwertier"  # 密码
+EMAIL_USE_TLS = True             # 一般都为False
+EMAIL_FROM = "seworldtree@outlook.com"        # 邮箱来自
+DEFAULT_FROM_EMAIL = "seworldtree@outlook.com"
