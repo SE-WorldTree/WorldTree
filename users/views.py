@@ -1,4 +1,7 @@
-from django.http import HttpResponseRedirect
+import json
+
+import simplejson as simplejson
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse
 from django.views import View
@@ -6,7 +9,6 @@ from django.views import View
 from users.models import User, EmailVerifyRecord
 from users.utils import send_register_email
 from .forms import RegisterForm
-from itsdangerous import URLSafeTimedSerializer as utsr
 import base64
 
 
@@ -55,8 +57,14 @@ class ActiveUserView(View):
                 user.save()
         else:
             return render(request, "registration/active_fail.html")
-        return HttpResponseRedirect(reverse('login'))
+        return HttpResponseRedirect(reverse('login'), safe=False)
 
 
 def index(request):
     return render(request, 'index.html')
+
+
+def rejson(request):
+    proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
+    proposals = json.dumps(proposals)
+    return HttpResponse(proposals)

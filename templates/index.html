@@ -8,6 +8,8 @@
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
 
+    <link rel="stylesheet" href="http://apps.bdimg.com/libs/jqueryui/1.10.4/css/jquery-ui.min.css">
+
     <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/css/bootstrap.css"
           rel="stylesheet"/>
     <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/css/font-awesome.css"
@@ -17,6 +19,62 @@
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <style type="text/css">
+      .ui-com {
+        font-size: 14px;
+        max-height: 100px;
+        max-width: 172px;
+        overflow-y: auto;
+        /* 防止水平滚动条 */
+        overflow-x: hidden;
+      }
+    </style>
+
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/jquery/jquery-1.10.2.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/js/bootstrap.js"
+            type="text/javascript"></script>
+    <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            (function () {
+
+                var insertOptions = function (data, id) {
+                    var result = new Array();
+                    $.each(data, function (i, item) {
+                        result.push(item['short_name']);
+                    });
+                    //alert(result.toString());
+                    console.log(result.toString());
+                    $('#name').autocomplete({
+                        source: result
+                    });
+
+                }
+                $('#name').keyup(function () {
+                    var right_id = "#name";
+                    var url = "users/balabala/";
+                    var skeyword = $("#name").val();
+                    $.ajax({
+                        url: url,
+                        dataType: 'json',
+                        async: false,
+                        data: {"skeyword": skeyword, "csrfmiddlewaretoken": '{{ csrf_token }}'},
+                        success: function (data) {
+                            //alert(data.toString());
+                            insertOptions(data, right_id)
+                        },
+                        error: function (XmlHttprequest, textStatus, errorThrown) {
+                            alert("asbdlasldb")
+                        }
+                    });
+                });
+            })();
+        });
+    </script>
+
+
 </head>
 <body>
 <div id="navbar-full">
@@ -47,7 +105,7 @@
                     </ul>
                     <form class="navbar-form navbar-left navbar-search-form" role="search" style="margin: 14px;">
                         <div class="form-group" style="display: inline-block;">
-                            <input type="text" value="" class="form-control" placeholder="输入作者">
+                            <input id="name" type="text" value="" class="form-control ui-com" name="author" placeholder="输入作者">
                         </div>
                         <div class="form-group" style="display: inline-block;">
                             <input type="submit" class="btn btn-round btn-default" value="搜索"
@@ -79,7 +137,7 @@
                             <li><a href="{% url 'users:register' %}">注册</a></li>
 
                             <li>
-                                <button href="{% url 'login' %}" class="btn btn-round btn-default">登录</button>
+                                <button onclick="window.location.href='{% url 'login' %}'" class="btn btn-round btn-default">登录</button>
                             </li>
                         </ul>
                     {% endif %}
@@ -94,27 +152,6 @@
 
 </div> <!-- end menu-dropdown -->
 
-<!--
-<div class="flex-center">
-    <div class="container">
-        <div>
-            <h1 class="logo"><a href="{% url 'index' %}">Django Auth Example</a></h1>
-            {% if user.is_authenticated %}
-                <p>你已登录，欢迎你：<a href="#">{{ user.username }}</a></p>
-                <button class="btn btn-default"><a href="{% url 'logout' %}">注销登录</a></button>
-                <button class="btn btn-default"><a href="{% url 'password_change' %}">修改密码</a></button>
-
-            {% else %}
-                <p>你还没有登录，请
-                    <button class="btn btn-default"><a href="{% url 'login' %}">登录</a></button>
-                    或者
-                    <button class="btn btn-default"><a href="{% url 'users:register' %}">注册</a></button>
-                </p>
-            {% endif %}
-        </div>
-    </div>
-</div>
--->
 
 <div class="section" id="carousel">
     <div class="container">
@@ -181,12 +218,10 @@
 
 
 </body>
-    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/jquery/jquery-1.10.2.js"
-            type="text/javascript"></script>
+
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/jquery-ui-1.10.4.custom.min.js"
             type="text/javascript"></script>
-    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/js/bootstrap.js"
-            type="text/javascript"></script>
+
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/gsdk-checkbox.js"
             type="text/javascript"></script>
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/gsdk-radio.js"
@@ -218,5 +253,4 @@
 
 		});
 	</script>
-
 </html>
