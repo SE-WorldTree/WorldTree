@@ -7,5 +7,7 @@ app_name = 'users'
 urlpatterns = [
     url(r'^register/', views.register, name='register'),
     url(r'^balabala/', views.rejson, name='rejson'),
+    url(r'^relation/', views.uuuu, name='relation'),
+    url(r'^profile/', views.nnnn, name='profile'),
     url(r'^active/(?P<active_code>.*)/$', ActiveUserView.as_view(), name="user_active")
 ]

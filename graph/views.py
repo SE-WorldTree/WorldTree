@@ -304,12 +304,19 @@ def HaddNode (request) :
             return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     if request.method == 'POST' :
-        nf = newnodeForm(request.POST)
+        fuck = request.POST
     else : #GET
-        nf = newnodeForm(request.GET)
-    if nf.is_valid() :
-        nf = nf.cleaned_data
-        addNode(uid=request.user.id, **nf)
+        fuck = request.GET
+    if fuck['user_name'] :
+        nf = {'name': fuck['user_name'],
+              'email': fuck['user_email'],
+              'nickname': fuck['user_nickname'],
+              'blog': fuck['user_blog'],
+              'linkedin': fuck['user_linkedin'],
+              'ggsc': fuck['user_ggsc'],
+              'institute': fuck['user_ins'],
+              }
+        addNode(uid=233, **nf)
         ac = 1
     return HttpResponse(json.dumps({'ac': ac}))
 

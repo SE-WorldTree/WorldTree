@@ -57,6 +57,7 @@
                            style="margin: 0 auto; display: block;">
                 </div>
             </form>
+            {% if user.is_authenticated %}
                 <ul class="nav navbar-nav navbar-right">
                     <li class="dropdown">
                         <a href="#gsdk" class="dropdown-toggle" data-toggle="dropdown">
@@ -71,12 +72,22 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'users:profile' %}">个人信息</a></li>
-                            <li><a href="{% url 'relation:relation' %}">我的世界树</a></li>
+                            <li><a href="{% url 'relation:relation' %}">所有操作</a></li>
                             <li><a href="{% url 'logout' %}">注销登录</a></li>
                         </ul>
                     </li>
                 </ul>
+            {% else %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a href="{% url 'users:register' %}">注册</a></li>
 
+                    <li>
+                        <button onclick="window.location.href='{% url 'login' %}'" class="btn btn-round btn-default">
+                            登录
+                        </button>
+                    </li>
+                </ul>
+            {% endif %}
         </div><!-- /.navbar-collapse -->
     </div><!-- /.container-fluid -->
 </nav>
@@ -97,12 +108,8 @@
                         </div>
                         <div class="name">
                             <h3 class="title">Christian Louboutin</h3>
-                            <h6>Designer</h6>
                         </div>
                     </div>
-                </div>
-                <div class="description text-center">
-                    <p>AAA </p>
                 </div>
 
                 <div class="row">
@@ -111,18 +118,6 @@
                             <div class="nav-align-center">
                                 <ul class="nav nav-pills" role="tablist">
                                     <li class="active">
-                                        <a href="#studio" role="tab" data-toggle="tab">
-                                            <i class="material-icons">camera</i>
-                                            个人头像
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="#work" role="tab" data-toggle="tab">
-                                            <i class="material-icons">palette</i>
-                                            工作经历
-                                        </a>
-                                    </li>
-                                    <li>
                                         <a href="#shows" role="tab" data-toggle="tab">
                                             <i class="material-icons">face</i>
                                             基本信息
@@ -131,20 +126,88 @@
                                 </ul>
 
                                 <div class="tab-content gallery">
-                                    <div class="tab-pane active" id="studio">
-
-                                    </div>
-                                    <div class="tab-pane text-center" id="work">
+                                    <div class="tab-pane active" id="shows">
                                         <div class="row">
+                                            {% if ac %}
+                                                <div class="card card-signup">
+                                                    <form class="form" method="" action="">
+                                                        <div class="content">
+                                                            <div class="form-group">
+                                                                <span class="tim-note">姓名</span>
+                                                                <input name="name" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="tim-note">邮箱</span>
+                                                                <input name="email" type="email" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="tim-note">昵称</span>
+                                                                <input name="nickname" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="tim-note">博客</span>
+                                                                <input name="blog" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="tim-note">领英</span>
+                                                                <input name="linkedin" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class=""tim-note">谷歌学术</span>
+                                                                <input name="ggsc" placeholder="" class="form-control">
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <span class="tim-note">单位</span>
+                                                                <input name="institute" placeholder="" class="form-control">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
+                                                            <a href=""
+                                                               class="btn btn-primary btn-lg">
+                                                                修改
+                                                            </a>
+                                                        </div>
+                                                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
+                                                            <a href=""
+                                                               class="btn btn-upgrade btn-lg">
+                                                                删除
+                                                            </a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            {% else %}
+                                                <div class="card card-signup">
+                                                    <form class="form" method="" action="">
+                                                        <div class="content">
 
+                                                            <div class="col-md-6 col-md-offset-3 col-md-12 text-center">
+                                                                <h1 class="hello text-center">
+                                                                    <small>
+                                                                        <ul class="list-unstyled">
+                                                                            <li>姓名：</li>
+                                                                            <li>邮箱：</li>
+                                                                            <li>昵称：</li>
+                                                                            <li>博客：</li>
+                                                                            <li>领英：</li>
+                                                                            <li>谷歌学术：</li>
+                                                                            <li>单位：</li>
+                                                                        </ul>
+                                                                    </small>
+                                                                </h1>
+                                                            </div>
+
+                                                        </div>
+                                                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
+                                                            <a href=""
+                                                               class="btn btn-upgrade btn-lg">
+                                                                删除
+                                                            </a>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            {% endif %}
                                         </div>
                                     </div>
-                                    <div class="tab-pane text-center" id="shows">
-                                        <div class="row">
-
-                                        </div>
-                                    </div>
-
                                 </div>
                             </div>
                         </div>
