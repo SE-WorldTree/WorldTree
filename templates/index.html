@@ -29,7 +29,11 @@
         overflow-x: hidden;
       }
     </style>
-
+    <style>
+      .ui-autocomplete {
+        z-index: 111111;
+      }
+    </style>
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/jquery/jquery-1.10.2.js"
             type="text/javascript"></script>
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/js/bootstrap.js"
@@ -113,10 +117,10 @@
                                     class="fa fa-search"></i></a>
                         </li>
                     </ul>
-                    <form class="navbar-form navbar-left navbar-search-form" role="search" style="margin: 14px;">
+                    <form class="navbar-form navbar-left navbar-search-form" role="search" action="{% url 'graph:tree' %}"style="margin: 14px;">
                         <div class="form-group" style="display: inline-block;">
                             <input id="name" type="text" value="" class="form-control ui-com" name="author" placeholder="输入作者">
-                            <input id="person-id" name="author-id" type="hidden">
+                    <input id="person-id" name="id" type="hidden">
                         </div>
                         <div class="form-group" style="display: inline-block;">
                             <input type="submit" class="btn btn-round btn-default" value="搜索"
@@ -129,7 +133,7 @@
                                 <a href="#gsdk" class="dropdown-toggle" data-toggle="dropdown">
                                     <div class="logo-container">
                                         <div class="logo">
-                                            <img src="">
+                                            <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/new_logo.png">
                                         </div>
                                         <div class="brand">
                                             {{ user.username }}
@@ -137,8 +141,8 @@
                                     </div>
                                 </a>
                                 <ul class="dropdown-menu">
-                                    <li><a href="{% url 'users:profile' %}">个人信息</a></li>
-                                    <li><a href="{% url 'relation:relation' %}">所有操作</a></li>
+                                    <li><a href="{% url 'users:profile' %}?id={{ user.node_id }}">个人信息</a></li>
+                                    <li><a href="{% url 'users:relation' %}">所有操作</a></li>
                                     <li><a href="{% url 'logout' %}">注销登录</a></li>
                                 </ul>
                             </li>

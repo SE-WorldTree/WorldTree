@@ -441,14 +441,6 @@ def HremoveEdge (request) :
 def tmp (request) :
     res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
-    a = addNode(1, 'u1').id
-    b = addNode(1, 'u2').id
-    c = addNode(1, 'u3').id
-    d = addNode(1, 'u4').id
-    addEdge(1, a, b, '2015', '2017')
-    addEdge(1, b, c, '2015', '2017')
-    addEdge(1, a, d, '2015', '2017')
-    res = str(b)
     res.replace('\n', '<br>')
     return HttpResponse(res)
 

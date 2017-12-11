@@ -101,13 +101,14 @@ def nnnn(request):
     graph.views.updateNode(id, **args)
     user = graph.views.queryNode(id=id)[0]
     ac = -1
+    print(request.user.id, user.uid)
     if graph.views.ACMeow_DEBUG() :
         ac = 1
     elif request.user.id == user.uid :
         ac = 1
     else :
         ac = -1
-    return render(request, 'users/profile.html', {'user': user, 'ac': ac})
+    return render(request, 'users/profile.html', {'this_user': user, 'ac': ac})
 
 def hhhh(request):
     return render(request, 'users/hhhh.html')
