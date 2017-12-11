@@ -1,13 +1,23 @@
 from django.shortcuts import render
-from .models import node, edge
 from django.http import HttpResponse, HttpResponseRedirect
 from django.core.urlresolvers import reverse
+from .models import node, edge
 from .forms import nodeForm, newnodeForm, edgeForm
 from users.models import User
+from message.views import sendMessage as send, hasMessage, ACMeow_DEBUG
+
+
+"""
+Hprofile (request, id) : {'vf': vf, 'id': id}
+HaddNode (request) : GET:{'vf': vf, 'ac': ac} POST:reverse(profile,id) 
+HnewNode (request) : GET:{'vf': vf, 'ac': ac} POST:reverse(profile,id)
+HeditNode (request, id) : GET:{'vf': vf, 'id': id, 'ac': ac} POST:reverse(profile,id)
+HremoveNode (request, id) : ???
+HaddEdge (request) : GET:{'ef': ef, 'ac': ac} POST:reverse(adde) 
+HremoveEdge (request, id) : ???
+"""
 
 # Create your views here.
-
-#DEBUG = False
 
 """
 send
@@ -18,11 +28,11 @@ url: nodenotfound
 
 HnoNode = lambda : HttpResponse('No such person')
 HnoEdge = lambda : HttpResponse('No such relation')
-send = lambda uid, eid, op : HttpResponse('Send')
+#send = lambda uid, eid, op : HttpResponse('Send')
 
 """
 def checkLogin (request, needU = True) :
-    if DEBUG :
+    if ACMeow_DEBUG() :
         return True
     if not request.user.is_authenticated() :
         return HttpResponseRedirect(reverse('users:login'))
@@ -35,6 +45,7 @@ def checkArgs (args) :
     for word in ['id', 'name', 'isusr', 'uid'] :
         if word in args :
             args.pop(word)
+
 
 def addNode (uid, name, isusr = False, **kwargs) :
     checkArgs(kwargs)
@@ -132,12 +143,13 @@ def removeEdge (id) :
 
 
 def Hprofile (request, id) :
-    if not DEBUG :
-        print('/')
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     r = queryNode(id=id)
     if len(r) != 1 :
         return HnoNode()
@@ -151,16 +163,18 @@ def Hprofile (request, id) :
     broedge = [eg for pntid in [i.id for i in pnt] for eg in queryEdge(pntid = pntid)]
     bro = [queryNode(id=eg.chdid)[0] for eg in broedge]
 
-    #json
+    # json
 
     return render(request, 'profile.html', {'vf': vf, 'id': id})
 
 def HaddNode (request) :
-    if not DEBUG :
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -174,7 +188,7 @@ def HaddNode (request) :
     return render(request, 'addv.html', {'vf':vf, 'ac':ac})
 
 def HnewNode (request) :
-    if not DEBUG and not request.user.is_authenticated() :
+    if not ACMeow_DEBUG() and not request.user.is_authenticated() :
         return HttpResponseRedirect(reverse('users:login'))
     ac = 0
     if request.method == 'POST' :
@@ -190,15 +204,17 @@ def HnewNode (request) :
     return render(request, 'addv.html', {'vf':vf, 'ac':ac})
 
 def HeditNode (request, id) :
-    if not DEBUG :
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     nd = queryNode(id=id)
     if len(nd) != 1 :
         return HnoNode()
-    if not DEBUG and request.user.id != nd[0].uid :
+    if not ACMeow_DEBUG() and request.user.id != nd[0].uid :
         ac = -1
         return HttpResponseRedirect(reverse('graph:profile', args=[id]))
     ac = 0
@@ -216,26 +232,30 @@ def HeditNode (request, id) :
     return render(request, 'edit.html', {'vf':vf, 'id':id, 'ac': ac})
 
 def HremoveNode (request, id) :
-    if not DEBUG :
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     nd = queryNode(id=id)
     if len(nd) != 1 :
         return HnoNode()
-    if (not DEBUG and request.user.id != nd[0].uid) or nd[0].isusr :
+    if (not ACMeow_DEBUG() and request.user.id != nd[0].uid) or nd[0].isusr :
         return HttpResponseRedirect(reverse('graph:profile', args=[id]))
     removeNode(id)
     return HttpResponseRedirect(reverse('index'))
 
 def HaddEdge (request) :
-    if not DEBUG :
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -250,17 +270,19 @@ def HaddEdge (request) :
     return render(request, 'adde.html', {'ef': ef, 'ac': ac})
 
 def HremoveEdge (request, id) :
-    if not DEBUG :
+    if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
+        if hasMessage(request.user.id) :
+            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     eg = queryEdge(id=id)
     if len(eg) != 1 :
         return HnoEdge()
     eg = eg[0]
-    if DEBUG or eg.pndid == request.user.id or eg.chdid == request.user.id :
+    if ACMeow_DEBUG() or eg.pndid == request.user.id or eg.chdid == request.user.id :
         removeEdge(id=id)
     else :
         send(eg.pntid, id, -1)
@@ -269,8 +291,9 @@ def HremoveEdge (request, id) :
     return HttpResponseRedirect(reverse('index'))
 
 def tmp (request) :
+    queryNode(id=24)[0].name='fuck'
     res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
-    res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(DEBUG))
+    #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
     res.replace('\n', '<br>')
     return HttpResponse(res)
 
