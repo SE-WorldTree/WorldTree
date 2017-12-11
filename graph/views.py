@@ -52,8 +52,12 @@ def addNode (uid, name, isusr = False, **kwargs) :
     checkArgs(kwargs)
     return node.objects.create(uid=uid,name=name,isusr=isusr,**kwargs)
 
-def compName (prename = "") :
+def compName (request) :
     #姓名自动补全 & 查找id
+    if request.method == 'GET' :
+        prename = request.GET['skeyword']
+    else :
+        prename = request.POST['skeyword']
     nodes = list(node.objects.filter(name__startswith=prename))
     res = [{'value':it.id, 'label':it.name, 'desc':it.__str__()} for it in nodes]
     return HttpResponse(json.dumps(res))
@@ -364,7 +368,7 @@ def HeditNode (request, id) :
     vf = nodeForm(initial=nd[0].__dict__)
     return render(request, 'edit.html', {'vf':vf, 'id':id, 'ac': ac})
 
-def HremoveNode (request, id) :
+def HremoveNode (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
@@ -373,6 +377,10 @@ def HremoveNode (request, id) :
         if hasMessage(request.user.id) :
             return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
+    if request.method == 'POST' :
+        id = request.POST['del_id']
+    else :
+        id = request.GET['del_id']
     nd = queryNode(id=id)
     if len(nd) == 1 :
         if ACMeow_DEBUG() or (request.user.id == nd[0].uid and not nd[0].isusr) :
@@ -392,16 +400,16 @@ def HaddEdge (request) :
     if request.method == 'POST' :
         ac = -1
         post = request.POST
-        ef = {'pntid': '',
-              'chdid': '',
-              'beginDate': '',
-              'endDate': ''}
+        ef = {'pntid': request.POST[],
+              'chdid': request.POST[],
+              'beginDate': request.POST[],
+              'endDate': request.POST[]}
         if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
             addEdge(request.user.id, **ef)
             ac = 1
     return json.dumps({'ac': ac})
 
-def HremoveEdge (request, id) :
+def HremoveEdge (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
             return HttpResponseRedirect(reverse('users:login'))
@@ -409,21 +417,25 @@ def HremoveEdge (request, id) :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
             return HttpResponseRedirect(reverse('message:getMessage'))
-    ac = -1
-    eg = queryEdge(id=id)
-    if len(eg) != 1 :
-        return HnoEdge()
-    eg = eg[0]
-    if ACMeow_DEBUG() or eg.pndid == request.user.id or eg.chdid == request.user.id :
-        removeEdge(id=id)
-    else :
-        send(eg.pntid, id, -1)
-        send(eg.chdid, id, -1)
-    ac = 1
-    return HttpResponseRedirect(reverse('index'))
 
-def HwqyRemoveNode (request) :
-    return HremoveNode(request, request.GET['delid'])
+    if request.method == 'POST' :
+        data = request.POST
+    else :
+        data = request.GET
+    del_s_id = data['del_s_id']
+    del_t_id = data['del_t_id']
+    ac = -1
+    egs = queryEdge(pntid=del_s_id, chdid=del_t_id, visit=False)
+    for eg in egs :
+        if ACMeow_DEBUG() or eg.pndid == request.user.id or eg.chdid == request.user.id :
+            removeEdge(id=id)
+            ac = 1
+        elif eg.cnt == 0 :
+            send(eg.pntid, id, -1)
+            send(eg.chdid, id, -1)
+            ac = 0
+    return json.dumps({'ac': ac})
+
 
 def tmp (request) :
     res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))

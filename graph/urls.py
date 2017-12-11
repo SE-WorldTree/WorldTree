@@ -7,9 +7,8 @@ urlpatterns = [
     url(r'^profile/(?P<id>.+)/$', views.Hprofile, name='profile'),
     url(r'^addv/$', views.HaddNode, name='addNode'),
     url(r'^newv/$', views.HnewNode, name='newNode'),
-    url(r'^edit/(?P<id>.+)/$', views.HeditNode, name='edit'),
-    url(r'^delv/(?P<id>.+)/$', views.HremoveNode, name='removeNode'),
+    url(r'^edit//$', views.HeditNode, name='edit'),
+    url(r'^delv//$', views.HremoveNode, name='removeNode'),
     url(r'^adde/$', views.HaddEdge, name='addEdge'),
-    url(r'^wqydelv/$', views.HwqyRemoveNode, name='wqyremoveNode'),
     url(r'^showgraph/$', views.showgraph, name='showgraph'),
 ]
