@@ -32,12 +32,62 @@
         overflow-x: hidden;
       }
     </style>
+    <style>
+      .ui-autocomplete {
+        z-index: 111111;
+      }
+    </style>
 
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/jquery/jquery-1.10.2.js"
             type="text/javascript"></script>
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/js/bootstrap.js"
             type="text/javascript"></script>
     <script src="http://apps.bdimg.com/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+
+        <script>
+        $(document).ready(function () {
+            (function () {
+                var insertOptions = function (data, id) {
+                    $('#teacher_name').autocomplete({
+                        minLength: 0,
+                        source: data,
+                        focus: function ( event, ui) {
+                            $( "#teacher_name" ).val( ui.item.label );
+                            return false;
+                        },
+                        select: function ( event, ui) {
+                            $( "#teacher_name" ).val( ui.item.label );
+                            $( "#teacher_id" ).val( ui.item.value );
+                            return false;
+                        }
+                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<a>" + item.label + "<br>" + item.desc + "</a>")
+                            .appendTo(ul);
+                    };
+                };
+                $('#teacher_name').keyup(function () {
+                    var right_id = "#teacher_name";
+                    var url = "/users/balabala/";
+                    var skeyword = $("#teacher_name").val();
+                    $.ajax({
+                        url: url,
+                        dataType: 'json',
+                        async: false,
+                        data: {"skeyword": skeyword, "csrfmiddlewaretoken": '{{ csrf_token }}'},
+                        success: function (data) {
+                            //alert(data.toString());
+                            insertOptions(data, right_id)
+                        },
+                        error: function (XmlHttprequest, textStatus, errorThrown) {
+                            alert("asbdlasldb")
+                        }
+                    });
+                });
+            })();
+        });
+    </script>
+
 
     <script>
         $(document).ready(function () {
@@ -83,49 +133,6 @@
         });
     </script>
 
-    <script>
-        $(document).ready(function () {
-            (function () {
-                var insertOptions = function (data, id) {
-                    $('#teacher-name').autocomplete({
-                        minLength: 0,
-                        source: data,
-                        focus: function ( event, ui) {
-                            $( "#teacher-name" ).val( ui.item.label );
-                            return false;
-                        },
-                        select: function ( event, ui) {
-                            $( "#teacher-name" ).val( ui.item.label );
-                            $( "#teacher-id" ).val( ui.item.value );
-                            return false;
-                        }
-                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
-                        return $("<li>")
-                            .append("<a>" + item.label + "<br>" + item.desc + "</a>")
-                            .appendTo(ul);
-                    };
-                }
-                $('#teacher-name').keyup(function () {
-                    var right_id = "#teacher-name";
-                    var url = "/users/balabala/";
-                    var skeyword = $("#teacher-name").val();
-                    $.ajax({
-                        url: url,
-                        dataType: 'json',
-                        async: false,
-                        data: {"skeyword": skeyword, "csrfmiddlewaretoken": '{{ csrf_token }}'},
-                        success: function (data) {
-                            //alert(data.toString());
-                            insertOptions(data, right_id)
-                        },
-                        error: function (XmlHttprequest, textStatus, errorThrown) {
-                            alert("asbdlasldb")
-                        }
-                    });
-                });
-            })();
-        });
-    </script>
 
     <script>
         $(document).ready(function () {
@@ -468,8 +475,8 @@
                             <div class="content">
                                 <div class="form-group label-floating">
                                     <label class="control-label">导师</label>
-                                    <input id="teacher-name" class="form-control">
-                                    <input id="teacher-id" name="pntid" type="hidden">
+                                    <input id="teacher_name" type="text" class="form-control">
+                                    <input id="teacher_id" name="pntid" type="hidden">
                                 </div>
                                 <div class="form-group label-floating">
                                     <label class="control-label">学生</label>
@@ -478,11 +485,11 @@
                                 </div>
                                 <div class="form-group label-floating">
                                     <label class="control-label">开始年份</label>
-                                    <input name="beginDate" class="form-control">
+                                    <input id="startyear" name="beginDate" class="form-control">
                                 </div>
                                 <div class="form-group label-floating">
                                     <label class="control-label">结束年份</label>
-                                    <input name="endDate" class="form-control">
+                                    <input id="endyear" name="endDate" class="form-control">
                                 </div>
                             </div>
                             <div class="footer text-center">
@@ -598,7 +605,6 @@
     <script>
         $('#adde-button').click(function(){
             $.ajax({
-                'fuckyou':alert('FUCKYOU'),
                 type: 'POST',
                 url: '{% url 'graph:addNode' %}',
                 data: {
@@ -632,6 +638,136 @@
                                 '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
                                 '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
                                 '</button><b>Error Alert:</b> 抱歉，加点失败。。。' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    }
+                },
+                error: function(XmlHttprequest, textStatus, errorThrown) {
+                    alert('未知错误');
+                }
+            });
+            }
+        );
+    </script>
+
+    <script>
+        $('#addv-button').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'graph:addEdge' %}',
+                data: {
+                    teacher_id:$('#teacher_id').val(),
+                    student_id:$('#student-id').val(),
+                    start_year:$('#startyear').val(),
+                    end_year:$('#endyear').val(),
+                    "csrfmiddlewaretoken": '{{ csrf_token }}'
+                },
+                datatype: 'json',
+                async: false,
+                success:function(data){
+                    json_data = JSON.parse(data);
+                    $('#showmessage').html('');
+                    if(json_data['ac'] > 0){
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-success"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">check</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Success Alert:</b> 呦呼！加边成功！~' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    } else {
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-danger"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">error_outline</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Error Alert:</b> 抱歉，加边失败。。。' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    }
+                },
+                error: function(XmlHttprequest, textStatus, errorThrown) {
+                    alert('未知错误');
+                }
+            });
+            }
+        );
+    </script>
+
+    <script>
+        $('#dele-button').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'graph:removeNode' %}',
+                data: {
+                    del_id:$('#del-id').val(),
+                    "csrfmiddlewaretoken": '{{ csrf_token }}'
+                },
+                datatype: 'json',
+                async: false,
+                success:function(data){
+                    json_data = JSON.parse(data);
+                    $('#showmessage').html('');
+                    if(json_data['ac'] > 0){
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-success"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">check</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Success Alert:</b> 呦呼！删点成功！~' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    } else {
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-danger"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">error_outline</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Error Alert:</b> 抱歉，删点失败。。。' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    }
+                },
+                error: function(XmlHttprequest, textStatus, errorThrown) {
+                    alert('未知错误');
+                }
+            });
+            }
+        );
+    </script>
+
+    <script>
+        $('#delv-button').click(function(){
+            $.ajax({
+                type: 'POST',
+                url: '{% url 'graph:removeEdge' %}',
+                data: {
+                    del_t_id:$('#del-teacher-id').val(),
+                    del_s_id:$('#del-student-id').val(),
+                    "csrfmiddlewaretoken": '{{ csrf_token }}'
+                },
+                datatype: 'json',
+                async: false,
+                success:function(data){
+                    json_data = JSON.parse(data);
+                    $('#showmessage').html('');
+                    if(json_data['ac'] > 0){
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-success"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">check</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Success Alert:</b> 呦呼！删边成功！~' +
+                                '</div></div></div>';
+                        $('#showmessage').html(message);
+                    } else {
+                        var message = '<div class="section section-notifications" id="notifications">' +
+                            '<div class="alert alert-danger"><div class="container-fluid">' +
+                                '<div class="alert-icon"><i class="material-icons">error_outline</i></div>' +
+                                '<button type="button" class="close" data-dismiss="alert" aria-label="Close">' +
+                                '<span aria-hidden="true"><i class="material-icons">clear</i></span>' +
+                                '</button><b>Error Alert:</b> 抱歉，删边失败。。。' +
                                 '</div></div></div>';
                         $('#showmessage').html(message);
                     }

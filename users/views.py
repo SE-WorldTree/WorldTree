@@ -65,7 +65,24 @@ def index(request):
 
 
 def rejson(request):
-    proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
+    # proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
+    proposals = [
+        {
+            'value': "jquery",
+            'label': "jQuery",
+            'desc': "the write less, do more, JavaScript library"
+        },
+        {
+            'value': "jquery-ui",
+            'label': "jQuery UI",
+            'desc': "the official user interface library for jQuery"
+        },
+        {
+            'value': "sizzlejs",
+            'label': "Sizzle JS",
+            'desc': "a pure-JavaScript CSS selector engine"
+        }
+    ]
     proposals = json.dumps(proposals)
     return HttpResponse(proposals)
 
@@ -75,3 +92,6 @@ def uuuu(request):
 
 def nnnn(request):
     return render(request, 'users/profile.html')
+
+def hhhh(request):
+    return render(request, 'users/hhhh.html')
