@@ -400,10 +400,10 @@ def HaddEdge (request) :
     if request.method == 'POST' :
         ac = -1
         post = request.POST
-        ef = {'pntid': request.POST[],
-              'chdid': request.POST[],
-              'beginDate': request.POST[],
-              'endDate': request.POST[]}
+        ef = {'pntid': request.POST['teacher_id'],
+              'chdid': request.POST['student_id'],
+              'beginDate': request.POST['start_year'],
+              'endDate': request.POST['end_year']}
         if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
             addEdge(request.user.id, **ef)
             ac = 1
