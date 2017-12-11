@@ -188,7 +188,7 @@ def graph (id) :
     broedge = list(set([eg for pntid in [i.id for i in pnt] for eg in queryEdge(pntid = pntid)])) #父节点与兄弟节点之间的边
     bro = list(set([queryNode(id=eg.chdid)[0] for eg in broedge])) #兄弟节点
 
-    urlFormat = lambda id : str(reverse('graph:showgraph'))+'?id='+str(id)
+    urlFormat = lambda id : str(reverse('users:profile'))+'?id='+str(id)
 
     #节点格式：
     def YouFormat (You) :
@@ -270,7 +270,7 @@ def graph (id) :
     for eg in broedge :
         links.append(BroEdge(eg))
 
-    return {'data': json.dumps(data), 'links': json.dumps(links)}
+    return {'data': json.dumps(data), 'links': json.dumps(links), 'name': You.name}
 
 def Hprofile (request, id) :
     if not ACMeow_DEBUG() :
@@ -311,17 +311,18 @@ def HaddNode (request) :
         fuck = request.POST
     else : #GET
         fuck = request.GET
-    if fuck['user_name'] :
+    if fuck['user_name'] != None and fuck['user_name'] != '':
         nf = {'name': fuck['user_name'],
               'email': fuck['user_email'],
               'nickname': fuck['user_nickname'],
               'blog': fuck['user_blog'],
-              'linkedin': fuck['user_linkedin'],
+              'linkedin': fuck['user_linked'],
               'ggsc': fuck['user_ggsc'],
               'institute': fuck['user_ins'],
               }
-        addNode(uid=233, **nf)
+        addNode(uid=request.user.id, **nf)
         ac = 1
+    print(ac)
     return HttpResponse(json.dumps({'ac': ac}))
 
 def HnewNode (request) :
@@ -386,7 +387,7 @@ def HremoveNode (request) :
         if ACMeow_DEBUG() or (request.user.id == nd[0].uid and not nd[0].isusr) :
             removeNode(id)
             ac = 1
-    return json.dumps({'ac': ac})
+    return HttpResponse(json.dumps({'ac': ac}))
 
 def HaddEdge (request) :
     if not ACMeow_DEBUG() :
@@ -400,14 +401,14 @@ def HaddEdge (request) :
     if request.method == 'POST' :
         ac = -1
         post = request.POST
-        ef = {'pntid': request.POST['teacher_id'],
-              'chdid': request.POST['student_id'],
-              'beginDate': request.POST['start_year'],
-              'endDate': request.POST['end_year']}
-        if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
+        ef = {'pntid': int(request.POST['teacher_id']),
+              'chdid': int(request.POST['student_id']),
+              'beginDate': int(request.POST['start_year']),
+              'endDate': int(request.POST['end_year'])}
+        if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) and ef['beginDate'] <= ef['endDate']:
             addEdge(request.user.id, **ef)
             ac = 1
-    return json.dumps({'ac': ac})
+    return HttpResponse(json.dumps({'ac': ac}))
 
 def HremoveEdge (request) :
     if not ACMeow_DEBUG() :
@@ -434,7 +435,7 @@ def HremoveEdge (request) :
             send(eg.pntid, id, -1)
             send(eg.chdid, id, -1)
             ac = 0
-    return json.dumps({'ac': ac})
+    return HttpResponse(json.dumps({'ac': ac}))
 
 
 def tmp (request) :
@@ -452,4 +453,7 @@ def tmp (request) :
     return HttpResponse(res)
 
 def showgraph (request) :
-    return render(request, 'showgraph.html', graph(request.GET['id']))
+    return render(request, 'users/tree.html', graph(request.GET['id']))
+
+def tree (request) :
+    return render(request, 'users/tree.html', {'id': request.GET['id']})

@@ -72,7 +72,7 @@
                         </a>
                         <ul class="dropdown-menu">
                             <li><a href="{% url 'users:profile' %}">个人信息</a></li>
-                            <li><a href="{% url 'relation:relation' %}">所有操作</a></li>
+                            <li><a href="{% url 'users:relation' %}">所有操作</a></li>
                             <li><a href="{% url 'logout' %}">注销登录</a></li>
                         </ul>
                     </li>
@@ -107,7 +107,7 @@
                                  alt="Circle Image" class="img-circle img-responsive img-raised">
                         </div>
                         <div class="name">
-                            <h3 class="title">Christian Louboutin</h3>
+                            <h3 class="title">{{ user.name }}</h3>
                         </div>
                     </div>
                 </div>
@@ -128,69 +128,77 @@
                                 <div class="tab-content gallery">
                                     <div class="tab-pane active" id="shows">
                                         <div class="row">
-                                            {% if ac %}
+                                            {% if ac > 0 %}
+                                                <div class="col-md-8 col-md-offset-2">
+
                                                 <div class="card card-signup">
                                                     <form class="form" method="" action="">
                                                         <div class="content">
-                                                            <div class="form-group">
-                                                                <span class="tim-note">姓名</span>
-                                                                <input name="name" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating" hidden="True">
+                                                                <label class="control-label">姓名</label>
+                                                                 <input name="id" hidden="True" class="form-control" value="{{ user.id }}">
+                                                                <input  name="name" class="form-control" value="{{ user.name }}">
+                                                             </div>
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">昵称</label>
+                                                                <input name="nickname" placeholder="" class="form-control" value="{{ user.nickname }}">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span class="tim-note">邮箱</span>
-                                                                <input name="email" type="email" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">邮箱</label>
+                                                                <input name="email" type="email" placeholder="" class="form-control" value="{{ user.email }}">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span class="tim-note">昵称</span>
-                                                                <input name="nickname" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">博客</label>
+                                                                <input name="blog" placeholder="" class="form-control" value="{{ user.blog }}">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span class="tim-note">博客</span>
-                                                                <input name="blog" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">领英</label>
+                                                                <input name="linkedin" placeholder="" class="form-control" value="{{ user.linkedin }}">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span class="tim-note">领英</span>
-                                                                <input name="linkedin" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">谷歌学术</label>
+                                                                <input name="ggsc" placeholder="" class="form-control" value="{{ user.ggsc }}">
                                                             </div>
-                                                            <div class="form-group">
-                                                                <span class=""tim-note">谷歌学术</span>
-                                                                <input name="ggsc" placeholder="" class="form-control">
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <span class="tim-note">单位</span>
-                                                                <input name="institute" placeholder="" class="form-control">
+                                                             <div class="form-group label-floating">
+                                                                <label class="control-label">单位</label>
+                                                                <input name="institute" placeholder="" class="form-control" value="{{ user.institute }}">
                                                             </div>
                                                         </div>
+                                                        <div class="row">
                                                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
-                                                            <a href=""
-                                                               class="btn btn-primary btn-lg">
-                                                                修改
+                                                            <a href="{% url 'graph:tree'  %}?id={{ user.id }}"
+                                                               class="btn btn-info">
+                                                                师承树
                                                             </a>
                                                         </div>
                                                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
+                                                            <input type="submit" class="btn btn-primary" value="修改"/>
+                                                        </div>
+                                                        <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
                                                             <a href=""
-                                                               class="btn btn-upgrade btn-lg">
+                                                               class="btn btn-upgrade">
                                                                 删除
                                                             </a>
-                                                        </div>
+                                                        </div></div>
                                                     </form>
+                                                </div>
                                                 </div>
                                             {% else %}
                                                 <div class="card card-signup">
                                                     <form class="form" method="" action="">
                                                         <div class="content">
 
-                                                            <div class="col-md-6 col-md-offset-3 col-md-12 text-center">
-                                                                <h1 class="hello text-center">
+                                                            <div class="col-md-10 col-md-offset-1 col-md-12 text-left">
+                                                                <h1 class="hello text-left">
                                                                     <small>
                                                                         <ul class="list-unstyled">
-                                                                            <li>姓名：</li>
-                                                                            <li>邮箱：</li>
-                                                                            <li>昵称：</li>
-                                                                            <li>博客：</li>
-                                                                            <li>领英：</li>
-                                                                            <li>谷歌学术：</li>
-                                                                            <li>单位：</li>
+                                                                            <li> 姓名：{{ user.name }}</li> <br>
+                                                                            <li> 昵称：{{ user.nickname }}</li> <br>
+                                                                            <li> 邮箱：<a href = "mailto:{{ user.email }}"> {{ user.email }} </a> </li> <br>
+                                                                            <li> 博客：<a href = "{{ user.blog }}"> {{ user.blog }} </a></li> <br>
+                                                                            <li> 领英：<a href = "{{ user.linkedin }}"> {{ user.linkedin }} </a></li> <br>
+                                                                            <li> 谷歌学术：<a href = "{{ user.ggsc }}"> {{ user.ggsc }} </a></li> <br>
+                                                                            <li> 单位：{{ user.institute }}</li> <br>
                                                                         </ul>
                                                                     </small>
                                                                 </h1>
@@ -198,9 +206,9 @@
 
                                                         </div>
                                                         <div class="col-xs-8 col-xs-offset-2 col-sm-4 col-sm-offset-4">
-                                                            <a href=""
-                                                               class="btn btn-upgrade btn-lg">
-                                                                删除
+                                                            <a href="{% url 'graph:tree'  %}?id={{ user.id }}"
+                                                               class="btn btn-info">
+                                                                师承树
                                                             </a>
                                                         </div>
                                                     </form>

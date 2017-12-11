@@ -10,19 +10,8 @@
 <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/echarts/jquery-3.1.1.min.js"></script>
 <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap.min.js"></script>
 <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/echarts/echarts.min.js"></script>
-</head>
 
 <body>
-
-<div class="title">
-    <h1>学术师承关系图谱 demo</h1>
-</div>
-
-<form action="/" method='post'>
-{% csrf_token %}
-{{ form }}
-<input id="b01" type="submit" value="提交"/>
-</form>
 
 <div id="main" class="center-block"></div>
 
@@ -155,9 +144,5 @@ $('#b10').click(function(){
 });
 
 </script>
-<div id="footer">
-    <h4>哈工大社会计算与信息检索研究中心出品 @ HIT-SCIR</h4>
-</div>
-
 </body>
 </html>

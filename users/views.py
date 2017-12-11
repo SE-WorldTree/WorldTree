@@ -10,7 +10,7 @@ from users.models import User, EmailVerifyRecord
 from users.utils import send_register_email
 from .forms import RegisterForm
 import base64
-
+import graph.views
 
 def register(request):
     # 只有当请求为 POST 时，才表示用户提交了注册信息
@@ -65,7 +65,7 @@ class ActiveUserView(View):
 def index(request):
     return render(request, 'index.html')
 
-
+"""
 def rejson(request):
     # proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
     proposals = [
@@ -87,13 +87,27 @@ def rejson(request):
     ]
     proposals = json.dumps(proposals)
     return HttpResponse(proposals)
-
+"""
+def rejson (request) :
+    return graph.views.compName(request)
 
 def uuuu(request):
     return render(request, 'users/relation.html')
 
 def nnnn(request):
-    return render(request, 'users/profile.html')
+    id = request.GET['id']
+    args = {a:b for a,b in request.GET.items() if b}
+    graph.views.checkArgs(args)
+    graph.views.updateNode(id, **args)
+    user = graph.views.queryNode(id=id)[0]
+    ac = -1
+    if graph.views.ACMeow_DEBUG() :
+        ac = 1
+    elif request.user.id == user.uid :
+        ac = 1
+    else :
+        ac = -1
+    return render(request, 'users/profile.html', {'user': user, 'ac': ac})
 
 def hhhh(request):
     return render(request, 'users/hhhh.html')
