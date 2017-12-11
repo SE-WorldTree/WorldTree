@@ -70,3 +70,10 @@ def rejson(request):
     proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
     proposals = json.dumps(proposals)
     return HttpResponse(proposals)
+
+
+def uuuu(request):
+    return render(request, 'users/relation.html')
+
+def nnnn(request):
+    return render(request, 'users/profile.html')

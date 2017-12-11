@@ -41,16 +41,26 @@
             (function () {
 
                 var insertOptions = function (data, id) {
-                    var result = new Array();
-                    $.each(data, function (i, item) {
-                        result.push(item['short_name']);
-                    });
-                    //alert(result.toString());
-                    console.log(result.toString());
-                    $('#name').autocomplete({
-                        source: result
-                    });
 
+                    //alert(result.toString());
+                    //console.log(result.toString());
+                    $('#name').autocomplete({
+                        minLength: 0,
+                        source: data,
+                        focus: function ( event, ui) {
+                            $( "#name" ).val( ui.item.label );
+                            return false;
+                        },
+                        select: function ( event, ui) {
+                            $( "#name" ).val( ui.item.label );
+                            $( "#person-id" ).val( ui.item.value );
+                            return false;
+                        }
+                    }).data("ui-autocomplete")._renderItem = function (ul, item) {
+                        return $("<li>")
+                            .append("<a>" + item.label + "<br>" + item.desc + "</a>")
+                            .appendTo(ul);
+                    };
                 }
                 $('#name').keyup(function () {
                     var right_id = "#name";
@@ -106,6 +116,7 @@
                     <form class="navbar-form navbar-left navbar-search-form" role="search" style="margin: 14px;">
                         <div class="form-group" style="display: inline-block;">
                             <input id="name" type="text" value="" class="form-control ui-com" name="author" placeholder="输入作者">
+                            <input id="person-id" name="author-id" type="hidden">
                         </div>
                         <div class="form-group" style="display: inline-block;">
                             <input type="submit" class="btn btn-round btn-default" value="搜索"
@@ -127,7 +138,7 @@
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li><a href="{% url 'users:profile' %}">个人信息</a></li>
-                                    <li><a href="{% url 'relation:relation' %}">我的世界树</a></li>
+                                    <li><a href="{% url 'relation:relation' %}">所有操作</a></li>
                                     <li><a href="{% url 'logout' %}">注销登录</a></li>
                                 </ul>
                             </li>
