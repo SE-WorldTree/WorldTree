@@ -1,5 +1,15 @@
+import json
+
+import simplejson as simplejson
+from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
+from django.urls import reverse
+from django.views import View
+
+from users.models import User, EmailVerifyRecord
+from users.utils import send_register_email
 from .forms import RegisterForm
+import base64
 
 
 def register(request):
@@ -13,8 +23,14 @@ def register(request):
         # 验证数据的合法性
         if form.is_valid():
             # 如果提交数据合法，调用表单的 save 方法将用户数据保存到数据库
-            form.save()
-
+            #form.save()
+            cd = form.cleaned_data
+            #new_user = form.save()
+            username, password, email = cd['username'], cd['password1'], cd['email']
+            user = User.objects.create(username=username, password=password, email=email, is_active=False)
+            user.set_password(password)
+            send_register_email(email, send_type="register")
+            user.save()
             # 注册成功，跳转回首页
             return redirect('/')
     else:
@@ -27,5 +43,28 @@ def register(request):
     return render(request, 'users/register.html', context={'form': form})
 
 
+class ActiveUserView(View):
+    def get(self, request, active_code):
+    # 用code在数据库中过滤处信息
+        all_records = EmailVerifyRecord.objects.filter(code=active_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                # 通过邮箱查找到对应的用户
+                user = User.objects.get(email=email)
+                # 激活用户
+                user.is_active = True
+                user.save()
+        else:
+            return render(request, "registration/active_fail.html")
+        return HttpResponseRedirect(reverse('login'), safe=False)
+
+
 def index(request):
     return render(request, 'index.html')
+
+
+def rejson(request):
+    proposals = [{'short_name': 'a1'}, {'short_name': 'a2'}, {'short_name': 'b1'}, {'short_name': 'b2'}]
+    proposals = json.dumps(proposals)
+    return HttpResponse(proposals)
