@@ -7,7 +7,7 @@ import graph.views
 # Create your views here.
 
 def ACMeow_DEBUG () :
-    return True
+    return False
 
 def sendMessage (uid, eid, op) :
     message.objects.create(uid=uid, eid=eid, op=op)

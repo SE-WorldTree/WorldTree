@@ -292,7 +292,7 @@ def Hprofile (request, id) :
     """
     # json
 
-    return render(request, 'profile.html', {'vf': vf, 'id': id})
+    return render(request, 'users/profile.html', {'vf': vf, 'id': id})
 
 def HaddNode (request) :
     if not ACMeow_DEBUG() :
@@ -304,7 +304,6 @@ def HaddNode (request) :
             return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     if request.method == 'POST' :
-        nf = newnodeForm(request.POST)
     else : #GET
         nf = newnodeForm(request.GET)
     if nf.is_valid() :
