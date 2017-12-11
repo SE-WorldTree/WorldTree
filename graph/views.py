@@ -374,12 +374,11 @@ def HremoveNode (request, id) :
             return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     nd = queryNode(id=id)
-    if len(nd) != 1 :
-        return HnoNode()
-    if (not ACMeow_DEBUG() and request.user.id != nd[0].uid) or nd[0].isusr :
-        return HttpResponseRedirect(reverse('graph:profile', args=[id]))
-    removeNode(id)
-    return HttpResponseRedirect(reverse('index'))
+    if len(nd) == 1 :
+        if ACMeow_DEBUG() or (request.user.id == nd[0].uid and not nd[0].isusr) :
+            removeNode(id)
+            ac = 1
+    return json.dumps({'ac': ac})
 
 def HaddEdge (request) :
     if not ACMeow_DEBUG() :
@@ -392,15 +391,15 @@ def HaddEdge (request) :
     ac = 0
     if request.method == 'POST' :
         ac = -1
-        ef = edgeForm(request.POST)
-        if ef.is_valid() :
-            ef = ef.cleaned_data
-            if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
-                ac = 1
-                addEdge(request.user.id, **ef)
-                return HttpResponseRedirect(reverse('graph:adde'))
-    ef = edgeForm()
-    return render(request, 'adde.html', {'ef': ef, 'ac': ac})
+        post = request.POST
+        ef = {'pntid': '',
+              'chdid': '',
+              'beginDate': '',
+              'endDate': ''}
+        if ef['pntid'] != ef['chdid'] and existNode(ef['pntid']) and existNode(ef['chdid']) :
+            addEdge(request.user.id, **ef)
+            ac = 1
+    return json.dumps({'ac': ac})
 
 def HremoveEdge (request, id) :
     if not ACMeow_DEBUG() :
