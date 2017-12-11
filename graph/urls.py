@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^delv/(?P<id>.+)/$', views.HremoveNode, name='removeNode'),
     url(r'^adde/$', views.HaddEdge, name='addEdge'),
     url(r'^wqydelv/$', views.HwqyRemoveNode, name='wqyremoveNode'),
+    url(r'^showgraph/$', views.showgraph, name='showgraph'),
 ]

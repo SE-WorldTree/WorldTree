@@ -168,13 +168,13 @@ def removeEdge (id) :
 
 
 
-def graph (request) :
+def graph (id) :
     #绘制关系图（后端
     #获取id
-    if request.method == 'POST' :
-        id = request.POST['id']
-    else :
-        id = request.GET['id']
+    #if request.method == 'POST' :
+    #    id = request.POST['id']
+    #else :
+    #    id = request.GET['id']
     #获取所有节点和边
     You = queryNode(id=id)[0] #你
     pntedge = list(set(queryEdge(chdid = id))) #你与父节点之间的边
@@ -184,7 +184,7 @@ def graph (request) :
     broedge = list(set([eg for pntid in [i.id for i in pnt] for eg in queryEdge(pntid = pntid)])) #父节点与兄弟节点之间的边
     bro = list(set([queryNode(id=eg.chdid)[0] for eg in broedge])) #兄弟节点
 
-    urlFormat = lambda id : str(reverse('graph:graph'))+'?id='+str(id)
+    urlFormat = lambda id : str(reverse('graph:showgraph'))+'?id='+str(id)
 
     #节点格式：
     def YouFormat (You) :
@@ -196,25 +196,28 @@ def graph (request) :
                 'label': {'normal': {'show': 'true',
                                      'textStyle': {'color': 'white',
                                                    'fontSize': 16}}},
-                'itemStyle': {'normal': {'color': "#FFA500"}}}
+                'itemStyle': {'normal': {'color': "#1B4869"}}}
     def PntFormat (You) :
         #父节点
         return {'name': You.name,
                 'url': urlFormat(You.id),
+                'symbolSize': '60',
                 'value': '<br/>'.join(You.__value__()),
-                'itemStyle': {'normal': {'color': "#2E3436"}}}
+                'itemStyle': {'normal': {'color': "#1593A2"}}}
     def ChdFormat (You) :
         #子节点
         return {'name': You.name,
                 'url': urlFormat(You.id),
+                'symbolSize': '40',
                 'value': '<br/>'.join(You.__value__()),
-                'itemStyle': {'normal': {'color': "#00FF00"}}}
+                'itemStyle': {'normal': {'color': "#FF8B00"}}}
     def BroFormat (You) :
         #兄弟节点
         return {'name': You.name,
                 'url': urlFormat(You.id),
+                'symbolSize': '50',
                 'value': '\n'.join(You.__value__()),
-                'itemStyle': {'normal': {'color': "#0000FF"}}}
+                'itemStyle': {'normal': {'color': "#ACF0F1"}}}
 
     ren = dict() #节点在图中的id
     data = [YouFormat(You)] #图中节点
@@ -263,7 +266,7 @@ def graph (request) :
     for eg in broedge :
         links.append(BroEdge(eg))
 
-    return HttpResponse(json.dumps({'data': data, 'links': links}))
+    return {'data': json.dumps(data), 'links': json.dumps(links)}
 
 def Hprofile (request, id) :
     if not ACMeow_DEBUG() :
@@ -419,6 +422,16 @@ def HwqyRemoveNode (request) :
 def tmp (request) :
     res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
+    a = addNode(1, 'u1').id
+    b = addNode(1, 'u2').id
+    c = addNode(1, 'u3').id
+    d = addNode(1, 'u4').id
+    addEdge(1, a, b, '2015', '2017')
+    addEdge(1, b, c, '2015', '2017')
+    addEdge(1, a, d, '2015', '2017')
+    res = str(b)
     res.replace('\n', '<br>')
     return HttpResponse(res)
 
+def showgraph (request) :
+    return render(request, 'showgraph.html', graph(request.GET['id']))
