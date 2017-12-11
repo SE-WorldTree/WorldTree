@@ -61,7 +61,7 @@
                             .append("<a>" + item.label + "<br>" + item.desc + "</a>")
                             .appendTo(ul);
                     };
-                }
+                };
                 $('#name').keyup(function () {
                     var right_id = "#name";
                     var url = "users/balabala/";
@@ -76,7 +76,7 @@
                             insertOptions(data, right_id)
                         },
                         error: function (XmlHttprequest, textStatus, errorThrown) {
-                            alert("asbdlasldb")
+                            alert("未知错误")
                         }
                     });
                 });

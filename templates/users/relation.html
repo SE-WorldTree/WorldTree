@@ -60,10 +60,10 @@
                             .append("<a>" + item.label + "<br>" + item.desc + "</a>")
                             .appendTo(ul);
                     };
-                }
+                };
                 $('#name').keyup(function () {
                     var right_id = "#name";
-                    var url = "users/balabala/";
+                    var url = "/users/balabala/";
                     var skeyword = $("#name").val();
                     $.ajax({
                         url: url,
@@ -106,8 +106,8 @@
                     };
                 }
                 $('#teacher-name').keyup(function () {
-                    var right_id = "#name";
-                    var url = "users/balabala/";
+                    var right_id = "#teacher-name";
+                    var url = "/users/balabala/";
                     var skeyword = $("#teacher-name").val();
                     $.ajax({
                         url: url,
@@ -151,7 +151,7 @@
                 }
                 $('#student-name').keyup(function () {
                     var right_id = "#name";
-                    var url = "users/balabala/";
+                    var url = "/users/balabala/";
                     var skeyword = $("#student-name").val();
                     $.ajax({
                         url: url,
@@ -195,7 +195,7 @@
                 }
                 $('#del-name').keyup(function () {
                     var right_id = "#name";
-                    var url = "users/balabala/";
+                    var url = "/users/balabala/";
                     var skeyword = $("#del-name").val();
                     $.ajax({
                         url: url,
@@ -239,7 +239,7 @@
                 }
                 $('#del-teacher-name').keyup(function () {
                     var right_id = "#name";
-                    var url = "users/balabala/";
+                    var url = "/users/balabala/";
                     var skeyword = $("#del-teacher-name").val();
                     $.ajax({
                         url: url,
@@ -283,7 +283,7 @@
                 }
                 $('#del-student-name').keyup(function () {
                     var right_id = "#name";
-                    var url = "users/balabala/";
+                    var url = "/users/balabala/";
                     var skeyword = $("#del-student-name").val();
                     $.ajax({
                         url: url,
