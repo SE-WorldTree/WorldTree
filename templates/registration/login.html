@@ -1,29 +1,33 @@
 <!DOCTYPE html>
 <html lang="zh-cn">
-{% load static %}
 <head>
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>首页</title>
-{#    <link rel="stylesheet" href="https://unpkg.com/mobi.css/dist/mobi.min.css">#}
+    <title>登录</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
-    <link href="{% static "bootstrap3/css/bootstrap.css" %}" rel="stylesheet"/>
-    <link href="{% static 'bootstrap3/css/font-awesome.css' %}" rel="stylesheet"/>
 
-    <link href="{% static 'assets/css/gsdk.css' %}" rel="stylesheet"/>
-    <link href="{% static 'assets/css/demo.css' %}" rel="stylesheet"/>
-
+    <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/css/bootstrap.css"
+          rel="stylesheet"/>
+    <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/css/font-awesome.css"
+          rel="stylesheet"/>
+    <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/css/gsdk.css" rel="stylesheet"/>
+    <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/css/demo2.css" rel="stylesheet"/>
+    <link href="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/css/material-kit.css" rel="stylesheet"/>
     <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Grand+Hotel' rel='stylesheet' type='text/css'>
 </head>
 <body>
 
 
 <div class="section section-full-screen section-signup"
-     style="background-image: url({% static 'assets/img/city.jpg' %}); background-size: cover;
+     style="background-image: url(
+     'https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/city.jpg'); background-size: cover;
      background-position: top center; min-height: 700px;">
     <div class="container">
         <div class="row">
@@ -106,30 +110,27 @@
     </div>
 </div>
 </body>
-    <script src="{% static 'jquery/jquery-1.10.2.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/jquery-ui-1.10.4.custom.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'bootstrap3/js/bootstrap.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/gsdk-checkbox.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/gsdk-radio.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/gsdk-bootstrapswitch.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/get-shit-done.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/custom.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/nouislider.min.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/bootstrap-datepicker.js' %}" type="text/javascript"></script>
-    <script src="{% static 'assets/js/material-kit.js' %}" type="text/javascript"></script>
-    <script type="text/javascript">
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/jquery/jquery-1.10.2.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/jquery-ui-1.10.4.custom.min.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/bootstrap3/js/bootstrap.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/gsdk-checkbox.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/gsdk-radio.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/gsdk-bootstrapswitch.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/get-shit-done.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/custom.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/nouislider.min.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/bootstrap-datepicker.js"
+            type="text/javascript"></script>
+    <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/material-kit.js"
+            type="text/javascript"></script>
 
-		$().ready(function(){
-			// the body of this function is in assets/material-kit.js
-			materialKit.initSliders();
-            window_width = $(window).width();
-
-            if (window_width >= 992){
-                big_image = $('.wrapper > .header');
-
-				$(window).on('scroll', materialKitDemo.checkScrollForParallax);
-			}
-
-		});
-	</script>
 </html>
