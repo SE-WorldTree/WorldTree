@@ -10,4 +10,5 @@ urlpatterns = [
     url(r'^edit/(?P<id>.+)/$', views.HeditNode, name='edit'),
     url(r'^delv/(?P<id>.+)/$', views.HremoveNode, name='removeNode'),
     url(r'^adde/$', views.HaddEdge, name='addEdge'),
+    url(r'^wqydelv/$', views.HwqyRemoveNode, name='wqyremoveNode'),
 ]

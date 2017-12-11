@@ -1,6 +1,6 @@
 import json
 
-import simplejson as simplejson
+#import simplejson as simplejson
 from django.http import HttpResponseRedirect, HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from django.urls import reverse

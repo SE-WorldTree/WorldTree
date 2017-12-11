@@ -25,8 +25,8 @@ class newnodeForm (forms.Form) :
 class edgeForm (forms.Form) :
     pntid = forms.IntegerField(label='导师', required=True)
     chdid = forms.IntegerField(label='学生', required=True)
-    beginDate = forms.IntegerField(label='开始年份', required=True, initial=datetime.date.today().year, min_value=1900, max_value=datetime.date.today().year)
-    endDate = forms.IntegerField(label='结束年份', required=True, initial=datetime.date.today().year, min_value=1900, max_value=datetime.date.today().year)
+    beginDate = forms.IntegerField(label='开始年份', required=True, initial=datetime.date.today().year, min_value=1900, max_value=datetime.date.today().year+100)
+    endDate = forms.IntegerField(label='结束年份', required=True, initial=datetime.date.today().year, min_value=1900, max_value=datetime.date.today().year+100)
 
     def clean_chdid (self) :
         pntid = self.cleaned_data['pntid']

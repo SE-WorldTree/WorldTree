@@ -28,13 +28,27 @@ class node (models.Model) :
             args['linkedin'] = self.linkedin
         if self.ggsc != "" :
             args['ggsc'] = self.ggsc
+        if self.institute != "" :
+            args['ggsc'] = self.institute
         return args
+
+    def __value__ (self) :
+        res = []
+        if self.nickname == "" :
+            res.append('%s'%self.name)
+        else :
+            res.append('%s(%s)'%(self.name,self.nickname))
+        for a,b in self.__args__() :
+            if a != 'nickname' :
+                res.append('%s : %s'%(a,b))
+        return res
 
     def __str__ (self) :
         if self.nickname == "" :
-            return '[%d] '%self.id + self.name + ' : ' + self.email
+            nk = ""
         else :
-            return '[%d] '%self.id + self.name + '(' + self.nickname + ') : ' + self.email
+            nk = '(%s)'%self.nickname
+        return '[%d] '%self.id + self.name + nk + ' : ' + self.email
 
 class edge (models.Model) :
     # id
