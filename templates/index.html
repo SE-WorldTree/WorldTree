@@ -111,7 +111,7 @@
                 <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                     <ul class="nav navbar-nav">
                         <li class="active"><a href="{% url 'index' %}">主页</a></li>
-                        <li class="active"><a href="">关于</a></li>
+                        <li class="active"><a href="{% url 'users:about' %}">关于</a></li>
                         <li>
                             <a href="javascript:void(0);" data-toggle="search" class="hidden-xs"><i
                                     class="fa fa-search"></i></a>
@@ -169,13 +169,32 @@
 </div> <!-- end menu-dropdown -->
 
 
-<div class="section" id="carousel">
+
+                {% if user.is_authenticated %}
+
+                    <div class="main">
+    <div class="container tim-container" style="max-width:800px; padding-top:100px">
+       <h1 class="text-center">世  界  树 <br> 你贴心的学术关系管家
+           <small class="subtitle">Your intimate academic relationship housekeeper.</small></h1>
+        <h5 class="text-center">
+            像银河联结着群星，世界树联系着你我与他。
+        </h5>
+
+    </div>
+    <div class="space"></div>
+<!-- end container -->
+</div>
+<!-- end main -->
+
+
+
+
+
+                {% else %}
+                    <div class="section" id="carousel">
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
-                {% if user.is_authenticated %}
-
-                {% else %}
                 <!-- Carousel Card -->
                 <div class="card card-raised card-carousel">
                     <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
@@ -199,19 +218,19 @@
                                     </div>
                                 </div>
                                 <div class="item">
-                                    <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/bg3.jpeg"
+                                    <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/bgnew-1.jpg"
                                          alt="Awesome Image">
                                     <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Somewhere Beyond, United States
+                                        <h4><i class="material-icons">location_on</i> Simple home page, cheerful mood
                                         </h4>
                                     </div>
                                 </div>
                                 <div class="item">
-                                    <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/bg4.jpeg"
+                                    <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/bgnew-2.jpg"
                                          alt="Awesome Image">
                                     <div class="carousel-caption">
-                                        <h4><i class="material-icons">location_on</i> Yellowstone National Park, United
-                                            States</h4>
+                                        <h4><i class="material-icons">location_on</i> New form of picture display of your tree
+                                        </h4>
                                     </div>
                                 </div>
                             </div>
@@ -226,11 +245,12 @@
                     </div>
                 </div>
                 <!-- End Carousel Card -->
-                {% endif %}
             </div>
         </div>
     </div>
 </div>
+
+                {% endif %}
 
 
 </body>

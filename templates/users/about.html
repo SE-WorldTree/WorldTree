@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>站内信</title>
+    <title>个人信息</title>
     <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0' name='viewport'/>
     <meta name="viewport" content="width=device-width"/>
     <link rel="apple-touch-icon" sizes="76x76"
@@ -30,7 +30,7 @@
 
 </head>
 
-<body class="profile-page">
+<body class="landing-page">
 
 <nav class="navbar navbar-transparent navbar-fixed-top navbar-color-on-scroll" role="navigation">
 
@@ -81,39 +81,97 @@
 <div class="wrapper">
     <div class="header header-filter" style="background-image: url(
     'https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/bg2.jpeg');">
-	</div>
-    <div class="section section-tabs">
         <div class="container">
-            <div class="row">
-
-                {% for it in data %}
-                <div class="col-md-6">
-                    <div class="card card-nav-tabs">
-                        <div class="header header-success">
-                            <div class="content">
-                                <div class="tab-content text-center">
-                                    <div class="tab-pane active" id="profile">
-                                        <div class="row sharing-area text-center">
-                                            <h6>{{ it.ms }}</h6>
-                                            <a href="{{ it.acl }}" class="btn btn-twitter">
-                                                同 意
-                                            </a>
-                                            <a href="{{ it.wal }}" class="btn btn-facebook">
-                                                不同意
-                                            </a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="row">
+					<div class="col-md-6">
+						<h1 class="title">世界树</h1>
+	                    <h4>
+                            强大而实用的学术关系管理查询系统<br>
+                            简洁  权威  实用<br>
+                            学者必备
+                        </h4>
+	                    <br />
+					</div>
                 </div>
-                {% endfor %}
-
             </div>
-        </div>
+	</div>
+
     </div>
 </div>
+
+		<div class="main main-raised">
+			<div class="container">
+		    	<div class="section text-center section-landing">
+
+
+                    <div class="row">
+	                    <div class="col-md-8 col-md-offset-2">
+	                        <h2 class="title">学术关系管理查询系统——2.2.0版本</h2>
+	                        <h5 class="description">支持添加人物，添加一位学者<br>
+                                支持添加关系，记录两位学者间的师承关系<br>
+                                支持删除人物，删除错误冗余信息<br>
+                                支持删除关系，修改错误冗余信息<br>
+                            </h5>
+	                    </div>
+	                </div>
+
+
+
+                    <div class="section text-center">
+	                <h2 class="title">开发团队成员</h2>
+
+					<div class="team">
+						<div class="row">
+							<div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/SHD.jpeg"
+                                         alt="Thumbnail Image" class="img-raised img-rounded">
+			                        <h4 class="title"> 孙慧东 <br />
+										<small class="text-muted">Designer</small>
+									</h4>
+			                        <p class="description">强大的后端设计师，无可替代的后端架构人员。</p>
+									<a href="https://github.com/FTU-ACMeow" class="btn btn-simple btn-just-icon">
+                                        <i class="fa fa-github"></i>
+                                    </a>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/WHY.jpeg"
+                                         alt="Thumbnail Image" class="img-raised img-rounded">
+			                        <h4 class="title"> 文灏洋 <br />
+										<small class="text-muted">Designer</small>
+									</h4>
+			                        <p class="description">项目总工程师，项目整体架构策划者。</p>
+									<a href="https://github.com/dimitriwhy" class="btn btn-simple btn-just-icon">
+                                        <i class="fa fa-github"></i>
+                                    </a>
+			                    </div>
+			                </div>
+			                <div class="col-md-4">
+			                    <div class="team-player">
+			                        <img src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/img/WQY.jpg"
+                                         alt="Thumbnail Image" class="img-raised img-rounded">
+			                        <h4 class="title"> 王庆尧 <br />
+										<small class="text-muted">Designer</small>
+									</h4>
+			                        <p class="description">可有可无的前端设计师，审美奇异的美工人员。</p>
+									<a href="https://github.com/holynova-SD" class="btn btn-simple btn-just-icon">
+                                        <i class="fa fa-github"></i>
+                                    </a>
+			                    </div>
+			                </div>
+						</div>
+					</div>
+
+	            </div>
+
+
+
+                </div>
+            </div>
+        </div>
+
 
 
 <footer class="footer">
@@ -123,6 +181,7 @@
         </div>
     </div>
 </footer>
+
 </body>
     <script src="https://rawcdn.githack.com/holynova-SD/CSSTest/master/assets/js/material.min.js"
             type="text/javascript"></script>
