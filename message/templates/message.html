@@ -1,0 +1,5 @@
+<tabel>
+    {% for it in data %}
+    <tr> <td> {{ it.ms }}</td> <td> <a href="{{ it.acl }}"> 同意 </a></td> <td> <a href="{{ it.wal }}"> 拒绝 </a> </td></tr> <br>
+    {% endfor %}
+</tabel>

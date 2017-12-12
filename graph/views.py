@@ -34,7 +34,7 @@ def checkLogin (request, needU = True) :
     if ACMeow_DEBUG() :
         return True
     if not request.user.is_authenticated() :
-        return HttpResponseRedirect(reverse('users:login'))
+        return HttpResponseRedirect(reverse('login'))
     if needU and request.user.id < 0 :
         return HttpResponseRedirect(reverse('graph:newNode'))
     return True
@@ -275,7 +275,7 @@ def graph (id) :
 def Hprofile (request, id) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -301,7 +301,7 @@ def Hprofile (request, id) :
 def HaddNode (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -327,24 +327,24 @@ def HaddNode (request) :
 
 def HnewNode (request) :
     if not ACMeow_DEBUG() and not request.user.is_authenticated() :
-        return HttpResponseRedirect(reverse('users:login'))
+        return HttpResponseRedirect(reverse('login'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
         nf = newnodeForm(request.POST)
         if nf.is_valid() :
-            ac = 1
             nf = nf.cleaned_data
             id = addNode(uid=request.user.id, isusr=True, **nf).id
             User.objects.filter(id = request.user.id).update(node_id = id)
-            return HttpResponseRedirect(reverse('graph:profile', args=[id]))
+            ac = 1
+            return HttpResponseRedirect(reverse('index'))
     vf = newnodeForm()
     return render(request, 'addv.html', {'vf':vf, 'ac':ac})
 
 def HeditNode (request, id) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -354,7 +354,7 @@ def HeditNode (request, id) :
         return HnoNode()
     if not ACMeow_DEBUG() and request.user.id != nd[0].uid :
         ac = -1
-        return HttpResponseRedirect(reverse('graph:profile', args=[id]))
+        return HttpResponseRedirect(reverse('users:profile', args=[id]))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -364,7 +364,7 @@ def HeditNode (request, id) :
             nf = nf.cleaned_data
             checkArgs(nf)
             updateNode(id, **nf)
-            return HttpResponseRedirect(reverse('graph:profile', args=[id]))
+            return HttpResponseRedirect(reverse('users:profile', args=[id]))
     #print(nd[0].__dict__)
     vf = nodeForm(initial=nd[0].__dict__)
     return render(request, 'edit.html', {'vf':vf, 'id':id, 'ac': ac})
@@ -372,7 +372,7 @@ def HeditNode (request, id) :
 def HremoveNode (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -392,7 +392,7 @@ def HremoveNode (request) :
 def HaddEdge (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -413,7 +413,7 @@ def HaddEdge (request) :
 def HremoveEdge (request) :
     if not ACMeow_DEBUG() :
         if not request.user.is_authenticated() :
-            return HttpResponseRedirect(reverse('users:login'))
+            return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
         if hasMessage(request.user.id) :
@@ -442,6 +442,7 @@ def tmp (request) :
     res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
     res.replace('\n', '<br>')
+    User.objects.filter(id=request.user.id).update(node_id=-1)
     return HttpResponse(res)
 
 def showgraph (request) :

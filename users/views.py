@@ -63,6 +63,10 @@ class ActiveUserView(View):
 
 
 def index(request):
+    if not request.user.is_authenticated() :
+        return HttpResponseRedirect(reverse('login'))
+    if request.user.node_id < 0 :
+        return HttpResponseRedirect(reverse('graph:newNode'))
     return render(request, 'index.html')
 
 """
