@@ -443,6 +443,10 @@ def tmp (request) :
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
     res.replace('\n', '<br>')
     User.objects.filter(id=request.user.id).update(node_id=-1)
+    addEdge(request.user.id, request.user.node_id, queryNode()[0].id, '2015', '2016')
+    res = queryEdge(visit=False)[0].id
+    send(request.user.id, res, 1)
+    send(request.user.id, res, -1)
     return HttpResponse(res)
 
 def showgraph (request) :

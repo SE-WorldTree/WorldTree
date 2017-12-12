@@ -118,4 +118,5 @@ def hhhh(request):
     return render(request, 'users/hhhh.html')
 
 def message(request):
-    return render(request, 'users/message.html')
+    return HttpResponseRedirect(reverse('message:message'))
+    #return render(request, 'users/message.html')

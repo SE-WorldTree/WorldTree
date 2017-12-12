@@ -40,7 +40,7 @@ def Hmessage (request) :
         args['acl'] = reverse('message:acm',args=[m.id])#+'?id='+str(m.id)
         args['wal'] = reverse('message:wam',args=[m.id])#+'?id='+str(m.id)
         r.append(args.copy())
-    return render(request, 'message.html', {'data': r})
+    return render(request, 'users/message.html', {'data': r})
 
 def HacMessage (request, id) :
     if not ACMeow_DEBUG() :

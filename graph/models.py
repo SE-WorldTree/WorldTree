@@ -64,7 +64,7 @@ class node (models.Model) :
             nk = ""
         else :
             nk = '(%s)'%self.nickname
-        return '[%d] '%self.id + self.name + nk + ' : ' + self.email
+        return self.name + nk + ' : %s, %s, %s, %s, %s'%(self.institute, self.email, self.blog, self.linkedin, self.ggsc)
 
 class edge (models.Model) :
     # id
