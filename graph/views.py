@@ -381,7 +381,7 @@ def HremoveNode (request) :
         if ACMeow_DEBUG() or (request.user.id == nd[0].uid and not nd[0].isusr) :
             removeNode(id)
             ac = 1
-    return HttpResponse(json.dumps({'ac': ac}))
+    return HttpResponseRedirect(reverse('index'))
 
 def HaddEdge (request) :
     if not ACMeow_DEBUG() :
@@ -432,7 +432,11 @@ def tmp (request) :
     res = '<br/>'.join(str(i.id)+str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
     res.replace('\n', '<br>')
-    User.objects.filter(id=request.user.id).update(node_id=109)
+    res = 0
+    for it in queryEdge(visit=False) :
+        if not existNode(it.pntid) or not existNode(it.chdid) :
+            res = res + 1
+            removeEdge(it.id)
     return HttpResponse(res)
 
 def showgraph (request) :
