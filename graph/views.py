@@ -98,7 +98,7 @@ def existNode (id) :
     return node.objects.filter(id=id).count() == 1
 
 def mergeNode (id1, id2) :
-    #将两个节点合并
+#将两个节点合并
     if node.objects.filter(id=id1).count() == 1 and node.objects.filter(id=id2).count() == 1 :
         #若两个节点都存在：
         #先将两个节点的信息合并
@@ -134,6 +134,7 @@ def addEdge (uid, pntid, chdid, beginDate, endDate) :
             send(pnt[0].uid, eid, 1)
         if uid != chd[0].uid :
             send(chd[0].uid, eid, 1)
+        print(pntid,chdid)
         return 1
     else :
         return -1
@@ -278,8 +279,6 @@ def Hprofile (request, id) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
     r = queryNode(id=id)
     if len(r) != 1 :
         return HnoNode()
@@ -304,8 +303,6 @@ def HaddNode (request) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     if request.method == 'POST' :
         fuck = request.POST
@@ -332,6 +329,7 @@ def HnewNode (request) :
     if request.method == 'POST' :
         ac = -1
         nf = newnodeForm(request.POST)
+        print(request.POST)
         if nf.is_valid() :
             nf = nf.cleaned_data
             id = addNode(uid=request.user.id, isusr=True, **nf).id
@@ -347,8 +345,6 @@ def HeditNode (request, id) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
     nd = queryNode(id=id)
     if len(nd) != 1 :
         return HnoNode()
@@ -375,8 +371,6 @@ def HremoveNode (request) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = -1
     if request.method == 'POST' :
         id = request.POST['del_id']
@@ -395,8 +389,6 @@ def HaddEdge (request) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
     ac = 0
     if request.method == 'POST' :
         ac = -1
@@ -416,8 +408,6 @@ def HremoveEdge (request) :
             return HttpResponseRedirect(reverse('login'))
         if request.user.node_id < 0 :
             return HttpResponseRedirect(reverse('graph:newNode'))
-        if hasMessage(request.user.id) :
-            return HttpResponseRedirect(reverse('message:getMessage'))
 
     if request.method == 'POST' :
         data = request.POST
@@ -439,14 +429,10 @@ def HremoveEdge (request) :
 
 
 def tmp (request) :
-    res = '<br/>'.join(str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
+    res = '<br/>'.join(str(i.id)+str(i) for i in queryNode())+'<br/> <br/>'+'<br/>'.join(str(i) for i in queryEdge(visit=False))
     #res = "%d %s %s"%(request.user.node_id, str(request.user.node_id<0),str(ACMeow_DEBUG))
     res.replace('\n', '<br>')
-    User.objects.filter(id=request.user.id).update(node_id=-1)
-    addEdge(request.user.id, request.user.node_id, queryNode()[0].id, '2015', '2016')
-    res = queryEdge(visit=False)[0].id
-    send(request.user.id, res, 1)
-    send(request.user.id, res, -1)
+    User.objects.filter(id=request.user.id).update(node_id=109)
     return HttpResponse(res)
 
 def showgraph (request) :
