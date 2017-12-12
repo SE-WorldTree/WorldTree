@@ -116,3 +116,6 @@ def nnnn(request):
 
 def hhhh(request):
     return render(request, 'users/hhhh.html')
+
+def message(request):
+    return render(request, 'users/message.html')
